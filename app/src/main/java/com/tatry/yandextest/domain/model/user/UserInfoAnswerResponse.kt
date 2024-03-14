@@ -1,12 +1,7 @@
 package com.tatry.yandextest.domain.model.user
 
-import com.tatry.yandextest.data.network.dto.Device
-import com.tatry.yandextest.data.network.dto.Group
-import com.tatry.yandextest.data.network.dto.Household
-import com.tatry.yandextest.data.network.dto.Room
-import com.tatry.yandextest.data.network.dto.Scenario
 
-data class UserInfoAnswerSuccess(
+data class UserInfoResponse(
     val status: String = "status",
     val request_id: String = "request_id",
     val rooms: List<Room> = listOf(),

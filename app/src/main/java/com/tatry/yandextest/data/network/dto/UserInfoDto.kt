@@ -4,7 +4,7 @@ package com.tatry.yandextest.data.network.dto
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true)
 data class UserInfoDto (
     @Json(name="status")
     val status: String,
@@ -24,15 +24,15 @@ data class UserInfoDto (
 
 
 // Room
-@JsonClass(generateAdapter = true)
+//@JsonClass(generateAdapter = true)
 data class Room(
-    @Json(name="id")
+//    @Json(name="id")
     val id: String,
-    @Json(name="name")
+//    @Json(name="name")
     val name: String,
-    @Json(name="household_id")
+//    @Json(name="household_id")
     val household_id: String,
-    @Json(name="status")
+//    @Json(name="status")
     val devices: List<String>
 )
 

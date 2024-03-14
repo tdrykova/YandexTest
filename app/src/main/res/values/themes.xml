@@ -13,4 +13,19 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <color name="whiteIcon">#FFFFFF</color>
+    <color name="greyLight">#646367</color>
+    <color name="blue">#0981FB</color>
+    <color name="greySlider">#D9D9D9</color>
+
+
+    <style name="CustomSliderStyle" parent="Widget.MaterialComponents.Slider">
+        <item name="tickColorActive">@color/whiteIcon</item>
+        <item name="tickColorInactive">@color/whiteIcon</item>
+        <item name="trackColorInactive">@color/greyLight</item>
+        <item name="trackColorActive">@color/blue</item>
+        <item name="thumbColor">@color/greySlider</item>
+        <item name="haloColor">@color/greySlider</item>
+    </style>
 </resources>

@@ -22,5 +22,7 @@ data class State(
 )
 
 data class ActionResult(
-    val status: String
+    val status: String,
+    val error_code: String,
+    val error_message: String
 )

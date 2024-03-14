@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tatry.yandextest.data.network.UserRepositoryImpl
 import com.tatry.yandextest.domain.model.devices.answer.DeviceActionsAnswerModel
+import com.tatry.yandextest.domain.model.devices.get_device_state.GetDeviceStateResponse
 import com.tatry.yandextest.domain.model.devices.request.Action
 import com.tatry.yandextest.domain.model.devices.request.Device
 import com.tatry.yandextest.domain.model.devices.request.DeviceActionsModel
 import com.tatry.yandextest.domain.model.devices.request.State
-import com.tatry.yandextest.domain.model.user.UserInfoAnswerSuccess
+import com.tatry.yandextest.domain.model.user.UserInfoResponse
+import com.tatry.yandextest.domain.usecase.GetDeviceStateUseCase
 import com.tatry.yandextest.domain.usecase.GetUserInfoUseCase
 import com.tatry.yandextest.domain.usecase.PostDevicesActionsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,13 +21,15 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "MainFragment555"
 
-class YandexViewModelFactory: ViewModelProvider.Factory {
+class YandexViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(YandexViewModel::class.java)) {
             val repo = UserRepositoryImpl
             val useCase1 = GetUserInfoUseCase(repo)
-            val useCase2 = PostDevicesActionsUseCase(repo)
-            return YandexViewModel(useCase1, useCase2) as T
+            val useCase2 = GetDeviceStateUseCase(repo)
+            val useCase3 = PostDevicesActionsUseCase(repo)
+
+            return YandexViewModel(useCase1, useCase2, useCase3) as T
         }
         throw IllegalArgumentException("Unknown class name")
     }
@@ -33,16 +37,19 @@ class YandexViewModelFactory: ViewModelProvider.Factory {
 
 class YandexViewModel(
     private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val getDeviceStateUseCase: GetDeviceStateUseCase,
     private val postDevicesActionsUseCase: PostDevicesActionsUseCase
 ) : ViewModel() {
 
     private val token = "Bearer y0_AgAEA7qkJBRwAAtNHQAAAAD7NOpOAABZXzInfHtFAoIVc4SUjPlw0bda8g"
-    private var _userInfo = MutableStateFlow(UserInfoAnswerSuccess())
+    private var _userInfo = MutableStateFlow(UserInfoResponse())
     var userInfo = _userInfo.asStateFlow()
 
     private var _userToken = MutableStateFlow("token")
     var userToken = _userToken.asStateFlow()
 
+    private var _devState = MutableStateFlow(GetDeviceStateResponse())
+    var devState = _devState.asStateFlow()
 
     private var _devAction = MutableStateFlow(DeviceActionsAnswerModel())
     var devAction = _devAction.asStateFlow()
@@ -93,21 +100,33 @@ class YandexViewModel(
 //        }
 //    }
 
+
+    fun getDeviceState(token: String, devId: String) {
+        viewModelScope.launch {
+            _devState.value = getDeviceStateUseCase.getDeviceStateUseCase(token, devId)
+            Log.d(
+                YandexFragment.TAG, " getDeviceState ${_devState.value.toString()}"
+            )
+        }
+    }
+
     fun postAction(token: String, devId: String, typeAction: String, state: State) {
         viewModelScope.launch {
-            _devAction.value = postDevicesActionsUseCase.postDevicesActions(token, DeviceActionsModel(
-                devices = listOf(
-                    Device(
-                        id = devId,
-                        actions = listOf(
-                            Action(
-                                type = typeAction, //"devices.capabilities.on_off",
-                                state = state //State(instance = "on", value = false)
+            _devAction.value = postDevicesActionsUseCase.postDevicesActions(
+                token, DeviceActionsModel(
+                    devices = listOf(
+                        Device(
+                            id = devId,
+                            actions = listOf(
+                                Action(
+                                    type = typeAction, //"devices.capabilities.on_off",
+                                    state = state //State(instance = "on", value = false)
+                                )
                             )
                         )
                     )
                 )
-            ))
+            )
         }
 
     }
