@@ -1,33 +1,21 @@
-package com.tatry.yandextest.ui
+package com.tatry.yandextest.presentation
 
-import android.content.Context
 import android.content.Context.WIFI_SERVICE
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
-import android.net.wifi.p2p.WifiP2pManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.tatry.yandextest.databinding.FragmentYandexBinding
 import com.tatry.yandextest.domain.model.devices.request.State
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.PrintWriter
-import java.net.Socket
 
 
 /**
@@ -39,24 +27,20 @@ class YandexFragment : Fragment() {
     private lateinit var externalId: String
     private lateinit var devId: String
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     private val viewModel: YandexViewModel by viewModels {
         YandexViewModelFactory()
     }
 
-   // var wifiManager:WifiManager? = null
+    // var wifiManager:WifiManager? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentYandexBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,7 +48,8 @@ class YandexFragment : Fragment() {
 
 //        val wifiP2pManager = getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager?
 
-        val wifiManager = requireActivity().applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
+        val wifiManager =
+            requireActivity().applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
         val wifiConfig = WifiConfiguration()
         wifiConfig.SSID = "Wive-NG-NT"
         wifiConfig.preSharedKey = "********"
@@ -89,11 +74,6 @@ class YandexFragment : Fragment() {
 
 //        socket.connect()
 
-
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            viewModel.setToken(token)
-//        }
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.userInfo.collect {
 //                it.devices.forEach { dev -> dev.external_id }.toString()
@@ -101,30 +81,14 @@ class YandexFragment : Fragment() {
                 devId = if (it.devices.isEmpty()) "empty" else it.devices[2].id
                 with(binding) {
                     Log.d(TAG, "dev: $it")
-                    tvRequest.text = it.status
-
                     tvDevices.text = devId
-//                    imageCharacter.load(it.imageUrl)
                 }
-
             }
         }
-
 
         binding.btnDevState.setOnClickListener {
             if (devId != "empty") {
                 viewModel.getDeviceState(token, devId).toString()
-            }
-        }
-
-
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.devState.collect{
-                with(binding) {
-                    Log.d(TAG, "state: $it")
-                    tvDevices.text = it.toString()
-                }
             }
         }
 
@@ -137,66 +101,67 @@ class YandexFragment : Fragment() {
                 }
             }
         }
-        
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            val res = if (devId != "empty") viewModel.postAction(
-//                token = viewModel.userToken.value,
-//                devId = devId,
-//                typeAction = "devices.capabilities.on_off",
-//                state = State(instance = "on", value = true)
-//            ) else return@launch
-//            Log.d(TAG, "answer post: $res")
-//            viewModel.devAction.collect{
-//                binding.tvDevices.text = it.devices.toString()
-//                Log.d(TAG, " $it")
-//            }
-//
-//        }
 
-        Log.d(TAG, "dev state: extid: $externalId, id: ${devId}, token: $token")
+        // on_off
         binding.switchLight.setOnCheckedChangeListener { buttonView, isChecked ->
             viewLifecycleOwner.lifecycleScope.launch {
                 val res = if (devId != "empty") viewModel.postAction(
                     token = token,
                     devId = devId,
                     typeAction = "devices.capabilities.on_off",
-                    state = State(instance = "on", value = isChecked)
+                    state = State(instance = "on", value = isChecked, relative = false)
                 ) else return@launch
                 Log.d(TAG, "answer post: $res")
-                viewModel.devAction.collect{
+                viewModel.devAction.collect {
                     binding.tvDevices.text = it.devices.toString()
                     Log.d(TAG, " $it")
                 }
             }
         }
 
-        val flowIconSize = MutableStateFlow<Float?>(null)
-        lifecycleScope.launch {
-            flowIconSize
-                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-                .filter { it != null }
-                .debounce(50)
-                .collectLatest { iconSizeSliderValue ->
-                    withContext(Dispatchers.Main) {
-
-                    }
+        // color_setting, temperature_k
+        binding.sliderBrightness.addOnChangeListener { slider, value, fromUser ->
+            viewLifecycleOwner.lifecycleScope.launch() {
+                val res = if (devId != "empty") viewModel.postAction(
+                    token = token,
+                    devId = devId,
+                    typeAction = "devices.capabilities.color_setting",
+                    state = State(
+                        instance = "temperature_k",
+                        value = value.toInt(),
+                        relative = false
+                    )
+                ) else return@launch
+                viewModel.devAction.collect {
+                    binding.tvDevices.text = it.devices.toString()
+                    Log.d(TAG, " $it")
                 }
+            }
         }
 
-        binding.transparencySlider.addOnChangeListener { _, iconSizeSliderValue, _ ->
-            lifecycleScope.launch { flowIconSize.emit(iconSizeSliderValue) }
+        // color_setting, hsv
+        binding.btnChangeColor.setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch() {
+                val res = if (devId != "empty") viewModel.postAction(
+                    token = token,
+                    devId = devId,
+                    typeAction = "devices.capabilities.color_setting",
+                    state = State(instance = "hsv", value = object {
+                        val h = binding.etColorH.text.toString().toInt() // 125
+                        val s = binding.etColorS.text.toString().toInt() // 25
+                        val v = binding.etColorV.text.toString().toInt() // 100
+                    }, relative = false)
+                ) else return@launch
+                viewModel.devAction.collect {
+                    binding.tvDevices.text = it.devices.toString()
+                    Log.d(TAG, " $it")
+                }
+            }
         }
-
-
-
     }
 
-    fun controlAction(typeAction: String, ) {
+    fun controlAction(typeAction: String) {
 
-    }
-
-    fun slider() {
-        binding.transparencySlider.addOnChangeListener { slider, value, fromUser ->  }
     }
 
     override fun onDestroyView() {

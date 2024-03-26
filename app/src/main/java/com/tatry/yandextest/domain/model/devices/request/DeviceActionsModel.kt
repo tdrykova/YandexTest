@@ -16,5 +16,6 @@ data class Action(
 
 data class State (
     val instance: String,
-    val value: Boolean
+    val value: Any,
+    val relative: Boolean
 )

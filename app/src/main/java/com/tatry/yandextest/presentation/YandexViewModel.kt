@@ -1,4 +1,4 @@
-package com.tatry.yandextest.ui
+package com.tatry.yandextest.presentation
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

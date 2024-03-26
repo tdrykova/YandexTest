@@ -12,9 +12,9 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
-import java.util.concurrent.TimeUnit
 
 const val BASE_URL = "https://api.iot.yandex.net/v1.0/"
 interface YandexApi{
@@ -25,7 +25,7 @@ interface YandexApi{
     suspend fun getDeviceState(@Header("Authorization") token: String,
                                @Path("device_id") deviceId: String): GetDeviceStateResponse
 
-//    @Headers("Content-Type: application/json")
+    @Headers("Content-Type: application/json")
     @POST("devices/actions")
     suspend fun controlDeviceActions(@Header("Authorization") token: String,
                            @Body actions: DeviceActionsModel
@@ -62,23 +62,13 @@ object RetrofitInstance{
     }
 
     private val okHttpClient = OkHttpClient.Builder()
-
-//        .readTimeout(60, TimeUnit.SECONDS)
-//        .connectTimeout(60, TimeUnit.SECONDS)
-//        .addInterceptor(HttpLoggingInterceptor())
         .addNetworkInterceptor(interceptor)
         .build()
-
-//    private val moshi = Moshi.Builder()
-//        .add(KotlinJsonAdapterFactory())
-//        .build()
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
-//        .addConverterFactory(MoshiConverterFactory.create())
-//        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
     val yandexApi: YandexApi = retrofit.create(YandexApi::class.java)
 }

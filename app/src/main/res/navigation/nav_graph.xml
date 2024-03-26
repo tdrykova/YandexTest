@@ -6,6 +6,10 @@
 
     <fragment
         android:id="@+id/yandexFragment"
-        android:name="com.tatry.yandextest.ui.YandexFragment"
+        android:name="com.tatry.yandextest.presentation.YandexFragment"
         android:label="YandexFragment" />
+    <fragment
+        android:id="@+id/uiFragment"
+        android:name="com.tatry.yandextest.presentation.UiFragment"
+        android:label="UiFragment" />
 </navigation>

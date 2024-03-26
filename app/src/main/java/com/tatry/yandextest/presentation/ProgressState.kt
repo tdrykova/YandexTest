@@ -1,4 +1,4 @@
-package com.tatry.yandextest.ui
+package com.tatry.yandextest.presentation
 
 sealed class ProgressState {
     object Loading : ProgressState()
