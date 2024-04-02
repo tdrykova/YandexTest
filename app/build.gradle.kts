@@ -1,12 +1,15 @@
 plugins {
+    id("kotlin-kapt")
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+//    id("com.google.devtools.ksp")
+
 }
 
-kotlin {
-    jvmToolchain(8)
-}
+
+//kotlin {
+//    jvmToolchain(8)
+//}
 
 android {
     namespace = "com.tatry.yandextest"
@@ -32,11 +35,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+//        sourceCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+//        targetCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_17
+
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+//        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
@@ -67,7 +74,7 @@ dependencies {
     // Moshi
     implementation("com.squareup.moshi:moshi:1.14.0")
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+//    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
 
     // Gson
     implementation("com.google.code.gson:gson:2.10.1")
@@ -78,6 +85,11 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
+
+//    ksp("androidx.room:room-compiler:2.6.1")
+    // Room
+//    implementation("android.arch.persistence.room:runtime:1.1.1")
+//    kapt("android.arch.persistence.room:compiler:1.1.1")
 
     // OkHttp
     implementation("com.squareup.okhttp3:okhttp:4.10.0")

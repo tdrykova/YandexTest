@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 //@JsonClass(generateAdapter = true)
-data class UserInfoDto (
+data class UserInfoDtoOld (
     @Json(name="status")
     val status: String,
     @Json(name="request_id")

@@ -18,7 +18,7 @@ data class GetDeviceStateResponse(
 
 data class Capability(
     val retrievable: Boolean,
-    val type: String,
+    val type: String, // on_off
     val parameters: Any,
     val state: Any,
     val last_updated: Float

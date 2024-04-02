@@ -1,6 +1,5 @@
-package com.tatry.yandextest.data.network.mapper
+package com.tatry.yandextest.data.mapper
 
-import com.tatry.yandextest.data.network.dto.UserInfoDto
 import com.tatry.yandextest.domain.model.user.UserInfoResponse
 
 

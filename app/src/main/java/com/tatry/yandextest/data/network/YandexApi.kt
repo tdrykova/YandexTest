@@ -1,5 +1,7 @@
 package com.tatry.yandextest.data.network
 
+import com.tatry.yandextest.data.network.dto.action.DeviceListDTO
+import com.tatry.yandextest.data.network.dto.user_info.UserInfoDTO
 import com.tatry.yandextest.domain.model.devices.answer.DeviceActionsAnswerModel
 import com.tatry.yandextest.domain.model.devices.get_device_state.GetDeviceStateResponse
 import com.tatry.yandextest.domain.model.devices.request.DeviceActionsModel
@@ -19,7 +21,7 @@ import retrofit2.http.Path
 const val BASE_URL = "https://api.iot.yandex.net/v1.0/"
 interface YandexApi{
     @GET("user/info")
-    suspend fun getUserInfo(@Header("Authorization") token: String): UserInfoResponse
+    suspend fun getUserInfo(@Header("Authorization") token: String): UserInfoDTO
 
     @GET("devices/{device_id}")
     suspend fun getDeviceState(@Header("Authorization") token: String,
@@ -28,7 +30,7 @@ interface YandexApi{
     @Headers("Content-Type: application/json")
     @POST("devices/actions")
     suspend fun controlDeviceActions(@Header("Authorization") token: String,
-                           @Body actions: DeviceActionsModel
+                           @Body deviceList: DeviceListDTO
     ): DeviceActionsAnswerModel
 
     @GET("groups/{group_id}")

@@ -5,6 +5,6 @@ import com.tatry.yandextest.domain.repository.YandexRepository
 
 class GetDeviceStateUseCase(private val repo: YandexRepository) {
     suspend fun getDeviceStateUseCase(token: String, devId: String) : GetDeviceStateResponse {
-        return repo.getDeviceState(token, devId)
+        return repo.getDeviceStateFromNetwork(token, devId)
     }
 }

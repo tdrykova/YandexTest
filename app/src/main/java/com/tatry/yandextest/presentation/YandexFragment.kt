@@ -13,6 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.tatry.yandextest.databinding.FragmentYandexBinding
+import com.tatry.yandextest.domain.model.devices.action.ActionObjectModel
+import com.tatry.yandextest.domain.model.devices.action.DeviceActionModel
+import com.tatry.yandextest.domain.model.devices.action.DeviceListModel
+import com.tatry.yandextest.domain.model.devices.action.StateObjectModel
 import com.tatry.yandextest.domain.model.devices.request.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -75,14 +79,19 @@ class YandexFragment : Fragment() {
 //        socket.connect()
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.userInfo.collect {
-//                it.devices.forEach { dev -> dev.external_id }.toString()
-                externalId = if (it.devices.isEmpty()) "empty" else it.devices[2].external_id
-                devId = if (it.devices.isEmpty()) "empty" else it.devices[2].id
-                with(binding) {
-                    Log.d(TAG, "dev: $it")
-                    tvDevices.text = devId
-                }
+//            viewModel.userInfo.collect {
+////                it.devices.forEach { dev -> dev.external_id }.toString()
+//                externalId = if (it.deviceList.isEmpty()) "empty" else it.deviceList[2].externalId
+//                devId = if (it.deviceList.isEmpty()) "empty" else it.deviceList[2].id
+//                with(binding) {
+//                    Log.d(TAG, "dev: $it")
+//                    tvDevices.text = devId
+//                }
+//            }
+
+            viewModel.deviceList.collect {
+
+                Log.d(TAG, "deviceList: $it")
             }
         }
 
@@ -94,11 +103,7 @@ class YandexFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect {
-                when (it) {
-                    ProgressState.Loading -> binding.progressBar.isVisible = true
-                    ProgressState.Success -> binding.progressBar.isVisible = false
-                    else -> {}
-                }
+                binding.progressBar.isVisible = it is ProgressState.Loading
             }
         }
 
@@ -107,9 +112,17 @@ class YandexFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 val res = if (devId != "empty") viewModel.postAction(
                     token = token,
-                    devId = devId,
-                    typeAction = "devices.capabilities.on_off",
-                    state = State(instance = "on", value = isChecked, relative = false)
+                    deviceList = DeviceListModel( devices = listOf(
+                        DeviceActionModel(
+                            id = devId,
+                            actions = listOf(
+                                ActionObjectModel(
+                                type = "devices.capabilities.on_off",
+                                state = StateObjectModel(instance = "on", value = isChecked)
+                            ))
+                            )
+                    ))
+
                 ) else return@launch
                 Log.d(TAG, "answer post: $res")
                 viewModel.devAction.collect {
@@ -121,17 +134,22 @@ class YandexFragment : Fragment() {
 
         // color_setting, temperature_k
         binding.sliderBrightness.addOnChangeListener { slider, value, fromUser ->
-            viewLifecycleOwner.lifecycleScope.launch() {
+            viewLifecycleOwner.lifecycleScope.launch {
                 val res = if (devId != "empty") viewModel.postAction(
                     token = token,
-                    devId = devId,
-                    typeAction = "devices.capabilities.color_setting",
-                    state = State(
-                        instance = "temperature_k",
-                        value = value.toInt(),
-                        relative = false
-                    )
+                    deviceList = DeviceListModel( devices = listOf(
+                        DeviceActionModel(
+                            id = devId,
+                            actions = listOf(
+                                ActionObjectModel(
+                                    type = "devices.capabilities.color_setting",
+                                    state = StateObjectModel(instance = "temperature_k", value = value.toInt())
+                                ))
+                        )
+                    ))
+
                 ) else return@launch
+                Log.d(TAG, "answer post: $res")
                 viewModel.devAction.collect {
                     binding.tvDevices.text = it.devices.toString()
                     Log.d(TAG, " $it")
@@ -140,18 +158,29 @@ class YandexFragment : Fragment() {
         }
 
         // color_setting, hsv
+
         binding.btnChangeColor.setOnClickListener {
-            viewLifecycleOwner.lifecycleScope.launch() {
+            viewLifecycleOwner.lifecycleScope.launch {
                 val res = if (devId != "empty") viewModel.postAction(
                     token = token,
-                    devId = devId,
-                    typeAction = "devices.capabilities.color_setting",
-                    state = State(instance = "hsv", value = object {
+                    deviceList = DeviceListModel( devices = listOf(
+                        DeviceActionModel(
+                            id = devId,
+                            actions = listOf(
+                                ActionObjectModel(
+                                    type = "devices.capabilities.color_setting",
+                                    state = StateObjectModel(instance = "hsv",
+                                        value = object {
                         val h = binding.etColorH.text.toString().toInt() // 125
                         val s = binding.etColorS.text.toString().toInt() // 25
                         val v = binding.etColorV.text.toString().toInt() // 100
-                    }, relative = false)
+                    })
+                                ))
+                        )
+                    ))
+
                 ) else return@launch
+                Log.d(TAG, "answer post: $res")
                 viewModel.devAction.collect {
                     binding.tvDevices.text = it.devices.toString()
                     Log.d(TAG, " $it")
