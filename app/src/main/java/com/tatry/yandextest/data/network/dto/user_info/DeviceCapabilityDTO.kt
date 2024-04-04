@@ -10,10 +10,14 @@ data class DeviceCapabilityDTO(
     val reportable: Boolean,
     @SerializedName("retrievable")
     val retrievable: Boolean,
-    @SerializedName("parameters")
-    val parameters: Any, //
-    @SerializedName("state")
-    val state: StateObjectDTO? = null, //
+//    @SerializedName("parameters")
+//    val parameters: Any, //
+//    @SerializedName("state")
+//    val state: StateObjectDTO? = null, //
     @SerializedName("lastUpdated")
-    val lastUpdated: Float
+    val lastUpdated: Double
 )
+
+fun DeviceCapabilityDTO.toModel() {
+
+}

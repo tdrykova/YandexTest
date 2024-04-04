@@ -1,6 +1,7 @@
 package com.tatry.yandextest.domain.model.devices.user_info
 
 data class DeviceModel(
+    val generatedId: Long,
     val id: String,
     val name: String,
     val aliasesList: List<String>,

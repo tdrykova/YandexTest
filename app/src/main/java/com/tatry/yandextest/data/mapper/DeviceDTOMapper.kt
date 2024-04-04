@@ -29,7 +29,7 @@ import com.tatry.yandextest.domain.model.devices.user_info.RoomModel
 import com.tatry.yandextest.domain.model.devices.user_info.ScenarioModel
 import com.tatry.yandextest.domain.model.devices.user_info.UserInfoModel
 
-class DeviceMapper {
+class DeviceDTOMapper {
 
     // DeviceActionDTOToDeviceActionModel
 
@@ -39,21 +39,21 @@ class DeviceMapper {
         )
     }
 
-    private fun mapDeviceActionDTOToDeviceActionModel(deviceActionDto: DeviceActionDTO): DeviceActionModel {
+    fun mapDeviceActionDTOToDeviceActionModel(deviceActionDto: DeviceActionDTO): DeviceActionModel {
         return DeviceActionModel(
             id = deviceActionDto.id,
             actions = deviceActionDto.actions.map { mapActionObjectDTOToActionObjectModel(it) }
         )
     }
 
-    private fun mapActionObjectDTOToActionObjectModel(actionObjectDto: ActionObjectDTO): ActionObjectModel {
+    fun mapActionObjectDTOToActionObjectModel(actionObjectDto: ActionObjectDTO): ActionObjectModel {
         return ActionObjectModel(
             type = actionObjectDto.type,
             state = mapStateObjectDTOToSateObjectModel(actionObjectDto.state)
         )
     }
 
-    private fun mapStateObjectDTOToSateObjectModel(stateObjectDto: StateObjectDTO?): StateObjectModel {
+    fun mapStateObjectDTOToSateObjectModel(stateObjectDto: StateObjectDTO?): StateObjectModel {
         return StateObjectModel(
             instance = stateObjectDto?.instance,
             value = stateObjectDto?.value
@@ -69,21 +69,21 @@ class DeviceMapper {
         )
     }
 
-    private fun mapDeviceActionModelToDeviceActionDTO(deviceActionModel: DeviceActionModel): DeviceActionDTO {
+    fun mapDeviceActionModelToDeviceActionDTO(deviceActionModel: DeviceActionModel): DeviceActionDTO {
         return DeviceActionDTO(
             id = deviceActionModel.id,
             actions = deviceActionModel.actions.map { mapActionObjectModelToActionObjectDto(it) }
         )
     }
 
-    private fun mapActionObjectModelToActionObjectDto(actionObjectModel: ActionObjectModel): ActionObjectDTO {
+    fun mapActionObjectModelToActionObjectDto(actionObjectModel: ActionObjectModel): ActionObjectDTO {
         return ActionObjectDTO(
             type = actionObjectModel.type,
             state = mapStateObjectModelToSateObjectDTO(actionObjectModel.state)
         )
     }
 
-    private fun mapStateObjectModelToSateObjectDTO(stateObjectModel: StateObjectModel?): StateObjectDTO {
+    fun mapStateObjectModelToSateObjectDTO(stateObjectModel: StateObjectModel?): StateObjectDTO {
         return StateObjectDTO(
             instance = stateObjectModel?.instance,
             value = stateObjectModel?.value
@@ -104,7 +104,7 @@ class DeviceMapper {
         )
     }
 
-    private fun mapRoomModelToRoomDTO(roomModel: RoomModel): RoomDTO {
+    fun mapRoomModelToRoomDTO(roomModel: RoomModel): RoomDTO {
         return RoomDTO(
             id = roomModel.id,
             name = roomModel.name,
@@ -113,7 +113,7 @@ class DeviceMapper {
         )
     }
 
-    private fun mapGroupModelToGroupDTO(groupModel: GroupModel): GroupDTO {
+    fun mapGroupModelToGroupDTO(groupModel: GroupModel): GroupDTO {
         return GroupDTO(
             id = groupModel.id,
             name = groupModel.name,
@@ -129,7 +129,7 @@ class DeviceMapper {
         )
     }
 
-    private fun mapCapabilityGroupModelToCapabilityGroupDTO(
+    fun mapCapabilityGroupModelToCapabilityGroupDTO(
         capabilityGroupModel: CapabilityGroupModel
     ): CapabilityGroupDTO {
         return CapabilityGroupDTO(
@@ -140,7 +140,7 @@ class DeviceMapper {
         )
     }
 
-    private fun mapDeviceModelToDeviceDTO(deviceModel: DeviceModel): DeviceDTO {
+    fun mapDeviceModelToDeviceDTO(deviceModel: DeviceModel): DeviceDTO {
         return DeviceDTO(
             id = deviceModel.id,
             name = deviceModel.name,
@@ -164,20 +164,20 @@ class DeviceMapper {
         )
     }
 
-    private fun mapDeviceCapabilityModelToDeviceCapabilityDTO(
+    fun mapDeviceCapabilityModelToDeviceCapabilityDTO(
         deviceCapabilityModel: DeviceCapabilityModel
     ): DeviceCapabilityDTO {
         return DeviceCapabilityDTO(
             type = deviceCapabilityModel.type,
             reportable = deviceCapabilityModel.reportable,
             retrievable = deviceCapabilityModel.retrievable,
-            parameters = deviceCapabilityModel.parameters,
-            state = mapStateObjectModelToSateObjectDTO(deviceCapabilityModel.state),
+//            parameters = deviceCapabilityModel.parameters,
+//            state = mapStateObjectModelToSateObjectDTO(deviceCapabilityModel.state),
             lastUpdated = deviceCapabilityModel.lastUpdated
         )
     }
 
-    private fun mapDevicePropertyModelToDevicePropertyDTO(
+    fun mapDevicePropertyModelToDevicePropertyDTO(
         devicePropertyModel: DevicePropertyModel
     ): DevicePropertyDTO {
         return DevicePropertyDTO(
@@ -190,7 +190,7 @@ class DeviceMapper {
         )
     }
 
-    private fun mapScenarioModelToScenarioDTO(scenarioModel: ScenarioModel): ScenarioDTO {
+    fun mapScenarioModelToScenarioDTO(scenarioModel: ScenarioModel): ScenarioDTO {
         return ScenarioDTO(
             id = scenarioModel.id,
             name = scenarioModel.name,
@@ -198,7 +198,7 @@ class DeviceMapper {
         )
     }
 
-    private fun mapHouseholdModelToHouseholdDTO(householdModel: HouseholdModel): HouseholdDTO {
+    fun mapHouseholdModelToHouseholdDTO(householdModel: HouseholdModel): HouseholdDTO {
         return HouseholdDTO(
             id = householdModel.id,
             name = householdModel.name
@@ -219,7 +219,7 @@ class DeviceMapper {
         )
     }
 
-    private fun mapRoomDTOToRoomModel(roomDto: RoomDTO): RoomModel {
+    fun mapRoomDTOToRoomModel(roomDto: RoomDTO): RoomModel {
         return RoomModel(
             id = roomDto.id,
             name = roomDto.name,
@@ -228,7 +228,7 @@ class DeviceMapper {
         )
     }
 
-    private fun mapGroupDTOToGroupModel(groupDto: GroupDTO): GroupModel {
+    fun mapGroupDTOToGroupModel(groupDto: GroupDTO): GroupModel {
         return GroupModel(
             id = groupDto.id,
             name = groupDto.name,
@@ -244,7 +244,7 @@ class DeviceMapper {
         )
     }
 
-    private fun mapCapabilityGroupDTOToCapabilityGroupModel(
+    fun mapCapabilityGroupDTOToCapabilityGroupModel(
         capabilityGroupDto: CapabilityGroupDTO
     ): CapabilityGroupModel {
         return CapabilityGroupModel(
@@ -255,8 +255,9 @@ class DeviceMapper {
         )
     }
 
-    private fun mapDeviceDTOToDeviceModel(deviceDto: DeviceDTO): DeviceModel {
+    fun mapDeviceDTOToDeviceModel(deviceDto: DeviceDTO): DeviceModel {
         return DeviceModel(
+            generatedId = 0,
             id = deviceDto.id,
             name = deviceDto.name,
             aliasesList = deviceDto.aliasesList.map { it },
@@ -275,20 +276,22 @@ class DeviceMapper {
         )
     }
 
-    private fun mapDeviceCapabilityDTOToDeviceCapabilityModel(
+    fun mapDeviceCapabilityDTOToDeviceCapabilityModel(
         deviceCapabilityDto: DeviceCapabilityDTO
     ): DeviceCapabilityModel {
         return DeviceCapabilityModel(
+            generatedId = 0,
+            devId = "id",
             type = deviceCapabilityDto.type,
             reportable = deviceCapabilityDto.reportable,
             retrievable = deviceCapabilityDto.retrievable,
-            parameters = deviceCapabilityDto.parameters,
-            state = mapStateObjectDTOToSateObjectModel(deviceCapabilityDto.state),
+//            parameters = deviceCapabilityDto.parameters,
+//            state = mapStateObjectDTOToSateObjectModel(deviceCapabilityDto.state),
             lastUpdated = deviceCapabilityDto.lastUpdated
         )
     }
 
-    private fun mapDevicePropertyDTOToDevicePropertyModel(
+    fun mapDevicePropertyDTOToDevicePropertyModel(
         devicePropertyDto: DevicePropertyDTO
     ): DevicePropertyModel {
         return DevicePropertyModel(
@@ -301,7 +304,7 @@ class DeviceMapper {
         )
     }
 
-    private fun mapScenarioDTOToScenarioModel(scenarioDto: ScenarioDTO): ScenarioModel {
+    fun mapScenarioDTOToScenarioModel(scenarioDto: ScenarioDTO): ScenarioModel {
         return ScenarioModel(
             id = scenarioDto.id,
             name = scenarioDto.name,
@@ -309,7 +312,7 @@ class DeviceMapper {
         )
     }
 
-    private fun mapHouseholdDTOToHouseholdModel(householdDto: HouseholdDTO): HouseholdModel {
+    fun mapHouseholdDTOToHouseholdModel(householdDto: HouseholdDTO): HouseholdModel {
         return HouseholdModel(
             id = householdDto.id,
             name = householdDto.name
@@ -320,6 +323,7 @@ class DeviceMapper {
     // DeviceModelToDeviceEntity
     fun mapDeviceModelToDeviceEntity(deviceModel: DeviceModel): DeviceEntity {
         return DeviceEntity(
+            generatedId = deviceModel.generatedId,
             id = deviceModel.id,
             name = deviceModel.name,
             externalId = deviceModel.externalId,
@@ -330,9 +334,10 @@ class DeviceMapper {
     fun mapDeviceModelListToDeviceEntityList(deviceModelList: List<DeviceModel>) =
         deviceModelList.map { mapDeviceModelToDeviceEntity(it) }
 
-    // DeviceMEntityToDeviceModel
+    // DeviceEntityToDeviceModel
     fun mapDeviceEntityToDeviceModel(deviceEntity: DeviceEntity): DeviceModel {
         return DeviceModel(
+            generatedId = deviceEntity.generatedId,
             id = deviceEntity.id,
             name = deviceEntity.name,
             aliasesList = listOf(),
@@ -349,5 +354,7 @@ class DeviceMapper {
 
     fun mapDeviceEntityListToDeviceModelList(deviceEntityList: List<DeviceEntity>) =
         deviceEntityList.map { mapDeviceEntityToDeviceModel(it) }
+
+
 
 }

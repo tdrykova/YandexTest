@@ -1,8 +1,5 @@
 package com.tatry.yandextest.presentation
 
-import android.content.Context.WIFI_SERVICE
-import android.net.wifi.WifiConfiguration
-import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,8 +14,8 @@ import com.tatry.yandextest.domain.model.devices.action.ActionObjectModel
 import com.tatry.yandextest.domain.model.devices.action.DeviceActionModel
 import com.tatry.yandextest.domain.model.devices.action.DeviceListModel
 import com.tatry.yandextest.domain.model.devices.action.StateObjectModel
-import com.tatry.yandextest.domain.model.devices.request.State
-import kotlinx.coroutines.Dispatchers
+import com.tatry.yandextest.domain.model.devices.user_info.DeviceCapabilityModel
+import com.tatry.yandextest.domain.model.devices.user_info.DeviceModel
 import kotlinx.coroutines.launch
 
 
@@ -37,8 +34,6 @@ class YandexFragment : Fragment() {
         YandexViewModelFactory()
     }
 
-    // var wifiManager:WifiManager? = null
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,50 +45,72 @@ class YandexFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val wifiP2pManager = getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager?
+//        viewModel.createDeviceCapabilityList(listOf(
+//            CreateDeviceCapabilityModel(type = "on_off"),
+//            CreateDeviceCapabilityModel(type = "color_settings")
+//        ))
 
-        val wifiManager =
-            requireActivity().applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
-        val wifiConfig = WifiConfiguration()
-        wifiConfig.SSID = "Wive-NG-NT"
-        wifiConfig.preSharedKey = "********"
-
-        wifiManager.addNetwork(wifiConfig)
-        wifiManager.enableNetwork(wifiConfig.networkId, true)
-        Log.d(TAG, "onViewCreated: ${wifiManager.isP2pSupported}")
-
-//        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-////            val socket = Socket("192.168.1.50", 80)
-//            val socket = Socket("95.25.108.6", 8883)
-//            // 95.25.108.6
-//
-//            val out = PrintWriter(socket.getOutputStream())
-////            val out = DataOutputStream(socket.getOutputStream())
-////            out.
-//            out.println("AT+CWJAP=${wifiConfig.SSID},${wifiConfig.preSharedKey}")
-//            Log.d(TAG, "onViewCreated: ${socket.inetAddress}")
-////            out.close()
-////            socket.close()
+//        viewModel.getDeviceList(token)
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            viewModel.deviceList.collect {
+//                Log.d(TAG, "deviceList: $it")
+//            }
 //        }
 
-//        socket.connect()
-
-        viewLifecycleOwner.lifecycleScope.launch {
+//        viewModel.uploadUserInfo(token)
+//        viewLifecycleOwner.lifecycleScope.launch {
 //            viewModel.userInfo.collect {
-////                it.devices.forEach { dev -> dev.external_id }.toString()
-//                externalId = if (it.deviceList.isEmpty()) "empty" else it.deviceList[2].externalId
-//                devId = if (it.deviceList.isEmpty()) "empty" else it.deviceList[2].id
-//                with(binding) {
-//                    Log.d(TAG, "dev: $it")
-//                    tvDevices.text = devId
+//                if (it.status == "ok") {
+//                    Log.d(TAG, "onViewCreated: ${it.deviceList[1]}")
 //                }
+//                viewModel.insertDeviceWithCapabilityList(
+//                    DeviceModel()
+//                    it.deviceList[1], it.deviceList[1].capabilityList)
 //            }
+//        }
 
-            viewModel.deviceList.collect {
-
-                Log.d(TAG, "deviceList: $it")
+        viewModel.getDeviceList()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.devList.collect {
+                Log.d(TAG, "devList: ${it.map {dev -> dev }}")
             }
         }
+
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            viewModel.insertDeviceWithCapabilityList(
+//                device = DeviceModel(
+//                    generatedId=4,
+//                    id="51e797a4-93cf-4bc4-832e-698b6703467c",
+//                    name="Лампа",
+//                    aliasesList= listOf(),
+//                    roomId="ca82a680-0317-4bec-b92e-5c3dd27c61eb",
+//                    externalId="bf9159632e4fb1987bi7am",
+//                    type="devices.types.light",
+//                    groupIdList=listOf(),
+//                    capabilityList= listOf(
+//                        DeviceCapabilityModel(generatedId =1, devId ="id", type ="devices.capabilities.color_setting", reportable =true, retrievable =true, lastUpdated =0.0),
+//                        DeviceCapabilityModel(generatedId =1, devId ="id", type ="devices.capabilities.on_off", reportable =true, retrievable =true, lastUpdated =0.0),
+//                        DeviceCapabilityModel(generatedId =1, devId ="id", type ="devices.capabilities.range", reportable =true, retrievable =true, lastUpdated =0.0)),
+//                    propertyList= listOf(),
+//                    householdId="c9a8269c-9939-429b-bb56-05f5abae2937",
+//                    skillId = "35e2897a-c583-495a-9e33-f5d6f0f4cb49"
+//                ),
+//
+//                listOf(
+//                    DeviceCapabilityModel(generatedId =1, devId ="id", type ="devices.capabilities.color_setting", reportable =true, retrievable =true, lastUpdated =0.0),
+//                    DeviceCapabilityModel(generatedId =1, devId ="id", type ="devices.capabilities.on_off", reportable =true, retrievable =true, lastUpdated =0.0),
+//                    DeviceCapabilityModel(generatedId =1, devId ="id", type ="devices.capabilities.range", reportable =true, retrievable =true, lastUpdated =0.0))
+//            )
+//        }
+
+
+
+
+
+//        viewModel.insertDeviceWithCapabilityList(
+//            device =
+//            deviceCapabilityList =
+//        )
 
         binding.btnDevState.setOnClickListener {
             if (devId != "empty") {
@@ -158,7 +175,6 @@ class YandexFragment : Fragment() {
         }
 
         // color_setting, hsv
-
         binding.btnChangeColor.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch {
                 val res = if (devId != "empty") viewModel.postAction(

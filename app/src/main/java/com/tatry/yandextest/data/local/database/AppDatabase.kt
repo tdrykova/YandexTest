@@ -1,9 +1,6 @@
 package com.tatry.yandextest.data.local.database
 
 import android.app.Application
-//import android.arch.persistence.room.Database
-//import android.arch.persistence.room.Room
-//import android.arch.persistence.room.RoomDatabase
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -11,7 +8,7 @@ import com.tatry.yandextest.data.local.dao.DeviceDao
 import com.tatry.yandextest.data.local.entity.device.DeviceCapabilityEntity
 import com.tatry.yandextest.data.local.entity.device.DeviceEntity
 
-@Database(entities = [DeviceEntity::class], version = 1, exportSchema = false)
+@Database(entities = [DeviceEntity::class, DeviceCapabilityEntity::class], version = 8, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun deviceDao() : DeviceDao
 
