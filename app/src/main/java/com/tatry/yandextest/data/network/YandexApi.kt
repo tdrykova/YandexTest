@@ -1,11 +1,11 @@
 package com.tatry.yandextest.data.network
 
-import com.tatry.yandextest.data.network.dto.action.DeviceListDTO
+import com.tatry.yandextest.data.network.dto.action.DeviceActionsRequestDTO
 import com.tatry.yandextest.data.network.dto.user_info.UserInfoDTO
+import com.tatry.yandextest.domain.model.devices.ResponseModel
+import com.tatry.yandextest.domain.model.devices.action.DeviceActionsRequestModel
 import com.tatry.yandextest.domain.model.devices.answer.DeviceActionsAnswerModel
 import com.tatry.yandextest.domain.model.devices.get_device_state.GetDeviceStateResponse
-import com.tatry.yandextest.domain.model.devices.request.DeviceActionsModel
-import com.tatry.yandextest.domain.model.user.UserInfoResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -30,26 +30,28 @@ interface YandexApi{
     @Headers("Content-Type: application/json")
     @POST("devices/actions")
     suspend fun controlDeviceActions(@Header("Authorization") token: String,
-                           @Body deviceList: DeviceListDTO
-    ): DeviceActionsAnswerModel
-
-    @GET("groups/{group_id}")
-    suspend fun getGroupState(@Header("Authorization") token: String): UserInfoResponse
-
-    @POST("groups/{group_id}/actions")
-    suspend fun controlGroupActions(@Header("Authorization") token: String,
-                                   @Body actions: DeviceActionsModel
-    ): DeviceActionsAnswerModel
-
-    @POST("scenarios/{scenario_id}/actions")
-    suspend fun controlScenarioActions(@Header("Authorization") token: String,
-                                    @Body actions: DeviceActionsModel
+                           @Body deviceList: DeviceActionsRequestDTO
     ): DeviceActionsAnswerModel
 
     @DELETE("devices/{device_id}")
     suspend fun deleteDevice(@Header("Authorization") token: String,
-                                       @Body actions: DeviceActionsModel
+                             @Path("device_id") deviceId: String
+    ): ResponseModel
+
+    @GET("groups/{group_id}")
+    suspend fun getGroupState(@Header("Authorization") token: String): UserInfoDTO
+
+    @POST("groups/{group_id}/actions")
+    suspend fun controlGroupActions(@Header("Authorization") token: String,
+                                   @Body actions: DeviceActionsRequestModel
     ): DeviceActionsAnswerModel
+
+    @POST("scenarios/{scenario_id}/actions")
+    suspend fun controlScenarioActions(@Header("Authorization") token: String,
+                                    @Body actions: DeviceActionsRequestModel
+    ): DeviceActionsAnswerModel
+
+
 
 
 }

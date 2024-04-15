@@ -6,7 +6,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.customview.widget.ViewDragHelper
-import com.tatry.yandextest.presentation.control.UiSettingsViewModel
+import com.tatry.yandextest.presentation.screens.control.UiSettingsViewModel
 import java.util.*
 class DraggableCoordinatorLayout @JvmOverloads constructor(context: Context?, attrs: AttributeSet? = null)
     : CoordinatorLayout(context!!, attrs) {
@@ -28,6 +28,10 @@ class DraggableCoordinatorLayout @JvmOverloads constructor(context: Context?, at
         if (child != null) {
             draggableChildren.add(child)
         }
+    }
+
+    fun getElements():MutableList<View> {
+        return draggableChildren
     }
 
     fun setupWithViewModel(viewModel: UiSettingsViewModel) {

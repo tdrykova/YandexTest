@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/controlFragment">
+    app:startDestination="@id/yandexFragment">
 
     <fragment
         android:id="@+id/yandexFragment"
@@ -11,16 +11,16 @@
         android:label="YandexFragment" />
     <fragment
         android:id="@+id/uiFragment"
-        android:name="com.tatry.yandextest.presentation.control.UiFragment"
+        android:name="com.tatry.yandextest.presentation.screens.control.UiFragment"
         android:label="UiFragment" />
     <fragment
         android:id="@+id/controlFragment"
-        android:name="com.tatry.yandextest.presentation.control.ControlFragment"
+        android:name="com.tatry.yandextest.presentation.screens.control.ControlFragment"
         android:label="fragment_control"
         tools:layout="@layout/fragment_control" />
     <fragment
         android:id="@+id/uiSettingsFragment"
-        android:name="com.tatry.yandextest.presentation.control.UiSettingsFragment"
+        android:name="com.tatry.yandextest.presentation.screens.control.UiSettingsFragment"
         android:label="fragment_ui_settings"
         tools:layout="@layout/fragment_ui_settings" />
 </navigation>

@@ -4,7 +4,7 @@ package com.tatry.yandextest.data.mapper
 import com.tatry.yandextest.data.local.entity.device.DeviceEntity
 import com.tatry.yandextest.data.network.dto.action.ActionObjectDTO
 import com.tatry.yandextest.data.network.dto.action.DeviceActionDTO
-import com.tatry.yandextest.data.network.dto.action.DeviceListDTO
+import com.tatry.yandextest.data.network.dto.action.DeviceActionsRequestDTO
 import com.tatry.yandextest.data.network.dto.action.StateObjectDTO
 import com.tatry.yandextest.data.network.dto.user_info.CapabilityGroupDTO
 import com.tatry.yandextest.data.network.dto.user_info.DeviceCapabilityDTO
@@ -17,7 +17,7 @@ import com.tatry.yandextest.data.network.dto.user_info.ScenarioDTO
 import com.tatry.yandextest.data.network.dto.user_info.UserInfoDTO
 import com.tatry.yandextest.domain.model.devices.action.ActionObjectModel
 import com.tatry.yandextest.domain.model.devices.action.DeviceActionModel
-import com.tatry.yandextest.domain.model.devices.action.DeviceListModel
+import com.tatry.yandextest.domain.model.devices.action.DeviceActionsRequestModel
 import com.tatry.yandextest.domain.model.devices.action.StateObjectModel
 import com.tatry.yandextest.domain.model.devices.user_info.CapabilityGroupModel
 import com.tatry.yandextest.domain.model.devices.user_info.DeviceCapabilityModel
@@ -33,9 +33,9 @@ class DeviceDTOMapper {
 
     // DeviceActionDTOToDeviceActionModel
 
-    fun mapDeviceListDTOToDeviceListModel(deviceListDto: DeviceListDTO): DeviceListModel {
-        return DeviceListModel(
-            devices = deviceListDto.devices.map { mapDeviceActionDTOToDeviceActionModel(it) }
+    fun mapDeviceListDTOToDeviceListModel(deviceActionsRequestDto: DeviceActionsRequestDTO): DeviceActionsRequestModel {
+        return DeviceActionsRequestModel(
+            devices = deviceActionsRequestDto.devices.map { mapDeviceActionDTOToDeviceActionModel(it) }
         )
     }
 
@@ -63,9 +63,9 @@ class DeviceDTOMapper {
 
     // DeviceListModelToDeviceListDTO
 
-    fun mapDeviceListModelToDeviceListDTO(deviceListModel: DeviceListModel): DeviceListDTO {
-        return DeviceListDTO(
-            devices = deviceListModel.devices.map { mapDeviceActionModelToDeviceActionDTO(it) }
+    fun mapDeviceListModelToDeviceListDTO(deviceActionsRequestModel: DeviceActionsRequestModel): DeviceActionsRequestDTO {
+        return DeviceActionsRequestDTO(
+            devices = deviceActionsRequestModel.devices.map { mapDeviceActionModelToDeviceActionDTO(it) }
         )
     }
 
@@ -171,8 +171,8 @@ class DeviceDTOMapper {
             type = deviceCapabilityModel.type,
             reportable = deviceCapabilityModel.reportable,
             retrievable = deviceCapabilityModel.retrievable,
-//            parameters = deviceCapabilityModel.parameters,
-//            state = mapStateObjectModelToSateObjectDTO(deviceCapabilityModel.state),
+            parameters = deviceCapabilityModel.parameters,
+            state = mapStateObjectModelToSateObjectDTO(deviceCapabilityModel.state),
             lastUpdated = deviceCapabilityModel.lastUpdated
         )
     }
@@ -285,8 +285,8 @@ class DeviceDTOMapper {
             type = deviceCapabilityDto.type,
             reportable = deviceCapabilityDto.reportable,
             retrievable = deviceCapabilityDto.retrievable,
-//            parameters = deviceCapabilityDto.parameters,
-//            state = mapStateObjectDTOToSateObjectModel(deviceCapabilityDto.state),
+            parameters = deviceCapabilityDto.parameters,
+            state = mapStateObjectDTOToSateObjectModel(deviceCapabilityDto.state),
             lastUpdated = deviceCapabilityDto.lastUpdated
         )
     }

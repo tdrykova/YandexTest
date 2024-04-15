@@ -7,21 +7,20 @@ import androidx.lifecycle.viewModelScope
 import com.tatry.yandextest.App
 import com.tatry.yandextest.data.UserRepositoryImpl
 import com.tatry.yandextest.data.local.entity.device.DeviceRelations
-import com.tatry.yandextest.domain.model.devices.action.DeviceListModel
+import com.tatry.yandextest.domain.model.devices.action.DeviceActionsRequestModel
 import com.tatry.yandextest.domain.model.devices.answer.DeviceActionsAnswerModel
 import com.tatry.yandextest.domain.model.devices.get_device_state.GetDeviceStateResponse
 import com.tatry.yandextest.domain.model.devices.user_info.DeviceCapabilityModel
 import com.tatry.yandextest.domain.model.devices.user_info.DeviceModel
 import com.tatry.yandextest.domain.model.devices.user_info.UserInfoModel
-import com.tatry.yandextest.domain.model.local.CreateDeviceCapabilityModel
-import com.tatry.yandextest.domain.usecase.CreateDeviceCapabilityListUseCase
-import com.tatry.yandextest.domain.usecase.CashDeviceListUseCase
-import com.tatry.yandextest.domain.usecase.GetAllDeviceListUseCase
-import com.tatry.yandextest.domain.usecase.GetDeviceListUseCase
-import com.tatry.yandextest.domain.usecase.GetDeviceStateUseCase
-import com.tatry.yandextest.domain.usecase.InsertDeviceWithCapabilityListUseCase
-import com.tatry.yandextest.domain.usecase.UploadUserInfoUseCase
-import com.tatry.yandextest.domain.usecase.PostDevicesActionsUseCase
+import com.tatry.yandextest.domain.usecase.local.CreateDeviceCapabilityListUseCase
+import com.tatry.yandextest.domain.usecase.local.CashDeviceListUseCase
+import com.tatry.yandextest.domain.usecase.local.GetAllDeviceListUseCase
+import com.tatry.yandextest.domain.usecase.local.GetDeviceListUseCase
+import com.tatry.yandextest.domain.usecase.network.UploadDeviceStateUseCase
+import com.tatry.yandextest.domain.usecase.local.InsertDeviceWithCapabilityListUseCase
+import com.tatry.yandextest.domain.usecase.network.UploadUserInfoUseCase
+import com.tatry.yandextest.domain.usecase.network.PostDevicesActionsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,7 +38,7 @@ class YandexViewModelFactory : ViewModelProvider.Factory {
             val useCase4 = CashDeviceListUseCase(repo)
             val useCase5 = GetDeviceListUseCase(repo)
             val createDeviceCapabilityList = CreateDeviceCapabilityListUseCase(repo)
-            val useCase2 = GetDeviceStateUseCase(repo)
+            val useCase2 = UploadDeviceStateUseCase(repo)
             val useCase3 = PostDevicesActionsUseCase(repo)
             val useCase7 = InsertDeviceWithCapabilityListUseCase(repo)
             val getAllDeviceList = GetAllDeviceListUseCase(repo)
@@ -65,7 +64,7 @@ class YandexViewModel(
     private val cashDeviceListUseCase: CashDeviceListUseCase,
     private val createDeviceCapabilityListUseCase: CreateDeviceCapabilityListUseCase,
     private val getDeviceListUseCase: GetDeviceListUseCase,
-    private val getDeviceStateUseCase: GetDeviceStateUseCase,
+    private val uploadDeviceStateUseCase: UploadDeviceStateUseCase,
     private val postDevicesActionsUseCase: PostDevicesActionsUseCase,
     private val insertDeviceWithCapabilityListUseCase: InsertDeviceWithCapabilityListUseCase,
     private val getAllDeviceListUseCase: GetAllDeviceListUseCase,
@@ -115,14 +114,14 @@ class YandexViewModel(
 
     fun getDeviceState(token: String, devId: String) {
         viewModelScope.launch {
-            _devState.value = getDeviceStateUseCase.getDeviceStateUseCase(token, devId)
+            _devState.value = uploadDeviceStateUseCase.getDeviceStateUseCase(token, devId)
             Log.d(
                 YandexFragment.TAG, " getDeviceState ${_devState.value.toString()}"
             )
         }
     }
 
-    fun postAction(token: String, deviceList: DeviceListModel) {
+    fun postAction(token: String, deviceList: DeviceActionsRequestModel) {
         viewModelScope.launch {
             _devAction.value = postDevicesActionsUseCase.postDevicesActions(
                 token = token,
@@ -133,7 +132,6 @@ class YandexViewModel(
     fun uploadUserInfo(token:String) {
         viewModelScope.launch(Dispatchers.IO) {
            _userInfo.value = uploadUserInfoUseCase(token)
-            Log.d(TAG, "uploadUserInfo: ${_userInfo.value}")
         }
     }
 

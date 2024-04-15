@@ -12,10 +12,9 @@ import androidx.lifecycle.lifecycleScope
 import com.tatry.yandextest.databinding.FragmentYandexBinding
 import com.tatry.yandextest.domain.model.devices.action.ActionObjectModel
 import com.tatry.yandextest.domain.model.devices.action.DeviceActionModel
-import com.tatry.yandextest.domain.model.devices.action.DeviceListModel
+import com.tatry.yandextest.domain.model.devices.action.DeviceActionsRequestModel
 import com.tatry.yandextest.domain.model.devices.action.StateObjectModel
-import com.tatry.yandextest.domain.model.devices.user_info.DeviceCapabilityModel
-import com.tatry.yandextest.domain.model.devices.user_info.DeviceModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -44,6 +43,21 @@ class YandexFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        viewModel.uploadUserInfo(token)
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.userInfo.collect {
+
+                it.deviceList.forEachIndexed { ind, dev->
+                    if (ind == 1) devId = dev.id
+                    Log.d(TAG, "dev: ${dev.externalId}")
+                }
+
+//                devId = it.deviceList[1].id
+//                binding.tvDevices.text = it.deviceList[1].externalId
+            }
+        }
 
 //        viewModel.createDeviceCapabilityList(listOf(
 //            CreateDeviceCapabilityModel(type = "on_off"),
@@ -129,7 +143,7 @@ class YandexFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 val res = if (devId != "empty") viewModel.postAction(
                     token = token,
-                    deviceList = DeviceListModel( devices = listOf(
+                    deviceList = DeviceActionsRequestModel( devices = listOf(
                         DeviceActionModel(
                             id = devId,
                             actions = listOf(
@@ -154,7 +168,7 @@ class YandexFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 val res = if (devId != "empty") viewModel.postAction(
                     token = token,
-                    deviceList = DeviceListModel( devices = listOf(
+                    deviceList = DeviceActionsRequestModel( devices = listOf(
                         DeviceActionModel(
                             id = devId,
                             actions = listOf(
@@ -179,7 +193,7 @@ class YandexFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 val res = if (devId != "empty") viewModel.postAction(
                     token = token,
-                    deviceList = DeviceListModel( devices = listOf(
+                    deviceList = DeviceActionsRequestModel( devices = listOf(
                         DeviceActionModel(
                             id = devId,
                             actions = listOf(

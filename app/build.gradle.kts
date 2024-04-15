@@ -3,9 +3,33 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 //    id("com.google.devtools.ksp")
+//    kotlin("multiplatform")
 
 }
 
+
+kotlin {
+//    androidTarget()
+//    js().browser()
+//    macosX64()
+//    iosX64()
+//    iosArm64()
+
+//    sourceSets {
+//        val commonMain by getting {
+//            dependencies {
+//                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+//                implementation("com.juul.kable:core:1.0.0")
+//            }
+//        }
+//
+//        val androidMain by getting {
+//            dependencies {
+//                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
+//            }
+//        }
+//    }
+}
 
 
 //kotlin {

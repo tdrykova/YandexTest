@@ -17,7 +17,6 @@ enum class WidgetType {
     BUTTON,
     SWITCH,
     EDIT_TEXT_VIEW,
-    TEXT_VIEW,
     SEEKBAR,
     CHECK_BOX,
     COLOR_PICKER
