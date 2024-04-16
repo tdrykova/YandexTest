@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tatry.yandextest.App
-import com.tatry.yandextest.data.UserRepositoryImpl
+import com.tatry.yandextest.data.YandexRepositoryImpl
 import com.tatry.yandextest.data.local.entity.device.DeviceRelations
 import com.tatry.yandextest.domain.model.devices.action.DeviceActionsRequestModel
 import com.tatry.yandextest.domain.model.devices.answer.DeviceActionsAnswerModel
@@ -33,7 +33,7 @@ private const val TAG = "MainFragment555"
 class YandexViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(YandexViewModel::class.java)) {
-            val repo = UserRepositoryImpl(App.INSTANCE)
+            val repo = YandexRepositoryImpl(App.INSTANCE)
             val useCase1 = UploadUserInfoUseCase(repo)
             val useCase4 = CashDeviceListUseCase(repo)
             val useCase5 = GetDeviceListUseCase(repo)

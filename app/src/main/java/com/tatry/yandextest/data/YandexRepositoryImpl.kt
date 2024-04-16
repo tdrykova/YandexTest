@@ -17,7 +17,7 @@ import com.tatry.yandextest.domain.model.local.CreateDeviceCapabilityModel
 import com.tatry.yandextest.domain.model.user.UserModel
 import com.tatry.yandextest.domain.repository.YandexRepository
 
-class UserRepositoryImpl(
+class YandexRepositoryImpl(
     application: Application
 ): YandexRepository {
     private val deviceDtoMapper = DeviceDTOMapper()
