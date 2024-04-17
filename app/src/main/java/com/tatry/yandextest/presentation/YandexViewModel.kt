@@ -73,6 +73,12 @@ class YandexViewModel(
     private var _userInfo = MutableStateFlow(UserInfoModel())
     var userInfo = _userInfo.asStateFlow()
 
+    fun uploadUserInfo(token:String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _userInfo.value = uploadUserInfoUseCase(token)
+        }
+    }
+
     private var _devList = MutableSharedFlow<List<DeviceRelations>>()
     var devList = _devList.asSharedFlow()
 
@@ -129,11 +135,7 @@ class YandexViewModel(
         }
     }
 
-    fun uploadUserInfo(token:String) {
-        viewModelScope.launch(Dispatchers.IO) {
-           _userInfo.value = uploadUserInfoUseCase(token)
-        }
-    }
+
 
     fun getDeviceList(token: String) {
         viewModelScope.launch(Dispatchers.IO) {

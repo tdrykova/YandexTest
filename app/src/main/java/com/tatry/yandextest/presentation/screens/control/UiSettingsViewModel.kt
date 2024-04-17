@@ -29,11 +29,7 @@ class UiSettingsViewModel : ViewModel() {
     private var _widgetType = MutableSharedFlow<String>()
     var widgetType = _widgetType.asSharedFlow()
 
-    private var _posLeft = MutableSharedFlow<Int>()
-    var posLeft = _posLeft.asSharedFlow()
 
-    private var _posTop = MutableSharedFlow<Int>()
-    var posTop = _posTop.asSharedFlow()
 
     private var _widgetWidth = MutableSharedFlow<Int>()
     var widgetWidth = _widgetWidth.asSharedFlow()
@@ -51,7 +47,6 @@ class UiSettingsViewModel : ViewModel() {
 
     val itemList: LiveData<List<WidgetModel>> = mutableItemList as LiveData<List<WidgetModel>>
 
-    // Функция для добавления нового элемента в список
     fun addItem(item: WidgetModel) {
         val currentList = mutableItemList.value ?: mutableListOf()
         currentList.add(item)
@@ -81,6 +76,12 @@ class UiSettingsViewModel : ViewModel() {
             _widgetType.emit(type)
         }
     }
+
+    private var _posLeft = MutableSharedFlow<Int>()
+    var posLeft = _posLeft.asSharedFlow()
+
+    private var _posTop = MutableSharedFlow<Int>()
+    var posTop = _posTop.asSharedFlow()
 
     fun setPosLeft(left: Int) {
         viewModelScope.launch {

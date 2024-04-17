@@ -3,6 +3,7 @@ package com.tatry.yandextest.domain.model.widget
 data class WidgetModel(
     var id: Int? = null,
     val title: String,
+    val methodsType: String,
     val capabilityType: String,
     val capabilitySubType: String,
     val widgetType: String,
@@ -11,3 +12,4 @@ data class WidgetModel(
     val width: Int,
     val height: Int,
 )
+

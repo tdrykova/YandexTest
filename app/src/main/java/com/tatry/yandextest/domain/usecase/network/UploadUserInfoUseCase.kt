@@ -9,3 +9,5 @@ class UploadUserInfoUseCase(private val repo: YandexRepository) {
         return repo.getUserInfoFromNetwork(token)
     }
 }
+
+

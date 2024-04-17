@@ -48,14 +48,10 @@ class YandexFragment : Fragment() {
         viewModel.uploadUserInfo(token)
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             viewModel.userInfo.collect {
-
                 it.deviceList.forEachIndexed { ind, dev->
                     if (ind == 1) devId = dev.id
                     Log.d(TAG, "dev: ${dev.externalId}")
                 }
-
-//                devId = it.deviceList[1].id
-//                binding.tvDevices.text = it.deviceList[1].externalId
             }
         }
 

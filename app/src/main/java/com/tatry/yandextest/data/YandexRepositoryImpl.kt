@@ -24,14 +24,9 @@ class YandexRepositoryImpl(
     private val deviceEntityMapper = DeviceEntityMapper()
     private val deviceDao = AppDatabase.getInstance(application).deviceDao()
 
-
     // Network
     override suspend fun getUserInfoFromNetwork(token: String): UserInfoModel {
         return deviceDtoMapper.mapUserInfoDTOToUserInfoModel(RetrofitInstance.yandexApi.getUserInfo(token))
-    }
-
-    override suspend fun getDeviceStateFromNetwork(token: String, devId: String): GetDeviceStateResponse {
-        return RetrofitInstance.yandexApi.getDeviceState(token, devId)
     }
 
     override suspend fun controlDevicesActionsFromNetwork(token: String, deviceList: DeviceActionsRequestModel):
@@ -40,6 +35,12 @@ class YandexRepositoryImpl(
             token,
             deviceDtoMapper.mapDeviceListModelToDeviceListDTO(deviceList))
     }
+
+    override suspend fun getDeviceStateFromNetwork(token: String, devId: String): GetDeviceStateResponse {
+        return RetrofitInstance.yandexApi.getDeviceState(token, devId)
+    }
+
+
 
     override suspend fun deleteDevice(token: String, devId: String): ResponseModel {
         return RetrofitInstance.yandexApi.deleteDevice(token, devId)

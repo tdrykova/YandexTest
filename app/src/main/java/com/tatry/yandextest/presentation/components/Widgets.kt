@@ -18,6 +18,8 @@ import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import com.google.android.material.slider.RangeSlider
+import com.google.android.material.slider.Slider
 import com.tatry.yandextest.R
 
 
@@ -44,13 +46,13 @@ private fun createLinearLayout(context: Context): LinearLayout {
     return linearLayout
 }
 
-private fun createTextView(context: Context): TextView {
+private fun createTextView(context: Context, tvLabel: String): TextView {
     val textView = TextView(context).apply {
         layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        text = "Label"
+        text = tvLabel
     }
     textView.isClickable = true
     textView.setOnClickListener {
@@ -67,11 +69,15 @@ private fun dpToPx(context: Context, dp: Int): Int {
     ).toInt()
 }
 
-fun Context.createButton(container: ViewGroup, title: String, onClick: () -> Unit): View {
+fun Context.createButton(
+    container: ViewGroup, title: String,
+    tvLabel: String,
+    onClick: () -> Unit
+): View {
     val cardView = createCardView(this)
     cardView.id = View.generateViewId()
     val linearLayout = createLinearLayout(this)
-    val textView = createTextView(this)
+    val textView = createTextView(this, tvLabel)
 
     val button = Button(this).apply {
         layoutParams = LinearLayout.LayoutParams(
@@ -97,12 +103,13 @@ fun Context.createButton(container: ViewGroup, title: String, onClick: () -> Uni
 
 fun Context.createSwitch(
     container: ViewGroup,
+    tvLabel: String,
     onClick: (Boolean) -> Unit
 ): View {
     val cardView = createCardView(this)
     cardView.id = View.generateViewId()
     val linearLayout = createLinearLayout(this)
-    val textView = createTextView(this)
+    val textView = createTextView(this, tvLabel)
 
     val switch = SwitchCompat(this)
     Log.d("TAG", "switch id: ${switch.id}")
@@ -128,18 +135,19 @@ fun Context.createSwitch(
 
 fun Context.createEditTextWithButton(
     container: ViewGroup,
+    tvLabel: String,
 ) : View {
     val cardView = createCardView(this)
     cardView.id = View.generateViewId()
     val linearLayout = createLinearLayout(this)
-    val textView = createTextView(this)
+    val textView = createTextView(this, tvLabel)
 
     val editText = EditText(this).apply {
         layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        hint = "Enter text"
+//        hint = "Введите значение"
     }
 
     val button = Button(this).apply {
@@ -147,7 +155,7 @@ fun Context.createEditTextWithButton(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        text = "Submit"
+        text = "Выполнить"
     }
 
     linearLayout.addView(textView)
@@ -161,43 +169,44 @@ fun Context.createEditTextWithButton(
 
 fun Context.createSeekbar(
     container: ViewGroup,
-    maxValue: Int,
-    currentState: Int,
+    valueFrom: Int,
+    valueTo: Int,
+    step: Int,
     widthInDp: Int,
+    tvLabel: String,
     onClick: (Int) -> Unit
 ): View {
     val cardView = createCardView(this)
     cardView.id = View.generateViewId()
     val linearLayout = createLinearLayout(this)
-    val textView = createTextView(this)
+    val textView = createTextView(this, tvLabel)
 
-    val seekbar = SeekBar(this)
-    seekbar.id = View.generateViewId()
-    seekbar.max = maxValue
-    seekbar.progress = currentState
+    val slider = Slider(this)
+    slider.id = View.generateViewId()
+    slider.stepSize = step.toFloat()
+    slider.valueFrom = valueFrom.toFloat()
+    slider.valueTo = valueTo.toFloat()
+    slider.value = "3000".toFloat()
 
     val layoutParams = LinearLayout.LayoutParams(
         dpToPx(this, widthInDp),
         LinearLayout.LayoutParams.WRAP_CONTENT
     )
-    seekbar.layoutParams = layoutParams
+    slider.layoutParams = layoutParams
 
-    seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-        override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+    slider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener{
 
-        }
-
-        override fun onStartTrackingTouch(seekBar: SeekBar?) {
+        override fun onStartTrackingTouch(slider: Slider) {
 
         }
 
-        override fun onStopTrackingTouch(seekBar: SeekBar?) {
-            onClick(seekbar.progress)
+        override fun onStopTrackingTouch(slider: Slider) {
+            onClick(slider.value.toInt())
         }
     })
 
     linearLayout.addView(textView)
-    linearLayout.addView(seekbar)
+    linearLayout.addView(slider)
     cardView.addView(linearLayout)
 
     container.addView(cardView)
@@ -206,12 +215,13 @@ fun Context.createSeekbar(
 
 fun Context.createCheckbox(
     container: ViewGroup,
+    tvLabel: String,
     onClick: (Boolean) -> Unit
 ): View {
     val cardView = createCardView(this)
     cardView.id = View.generateViewId()
     val linearLayout = createLinearLayout(this)
-    val textView = createTextView(this)
+    val textView = createTextView(this, tvLabel)
 
     val checkbox = CheckBox(this)
     checkbox.id = View.generateViewId()
@@ -230,12 +240,13 @@ fun Context.createCheckbox(
 fun Context.createColorPicker(
     container: ViewGroup,
     width: Int,
-    height: Int
+    height: Int,
+    tvLabel: String,
 ): View {
     val cardView = createCardView(this)
     cardView.id = View.generateViewId()
     val linearLayout = createLinearLayout(this)
-    val textView = createTextView(this)
+    val textView = createTextView(this, tvLabel)
 
     val colorPicker = ImageView(this)
     colorPicker.id = View.generateViewId()

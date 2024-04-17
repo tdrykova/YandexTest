@@ -30,13 +30,12 @@ class DraggableCoordinatorLayout @JvmOverloads constructor(context: Context?, at
         }
     }
 
+
     fun getElements():MutableList<View> {
         return draggableChildren
     }
 
-    fun setupWithViewModel(viewModel: UiSettingsViewModel) {
-        uiSettingsViewModel = viewModel
-    }
+
 
     fun removeDraggableChild(child: View) {
         require(child.parent === this)
@@ -60,6 +59,10 @@ class DraggableCoordinatorLayout @JvmOverloads constructor(context: Context?, at
 
     fun enableDrag(enable: Boolean) {
         isDragEnabled = enable
+    }
+
+    fun setupWithViewModel(viewModel: UiSettingsViewModel) {
+        uiSettingsViewModel = viewModel
     }
 
     private val dragCallback: ViewDragHelper.Callback = object : ViewDragHelper.Callback() {

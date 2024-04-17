@@ -17,9 +17,15 @@ enum class WidgetType {
     BUTTON,
     SWITCH,
     EDIT_TEXT_VIEW,
-    SEEKBAR,
+    SLIDER,
     CHECK_BOX,
     COLOR_PICKER
+}
+
+enum class MethodsType {
+    Yandex,
+    ROS,
+    Arduino
 }
 
 enum class ExtraWidgetType {

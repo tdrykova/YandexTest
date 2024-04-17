@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import com.tatry.yandextest.databinding.FragmentUiSettingsBinding
 import com.tatry.yandextest.domain.model.widget.WidgetModel
 import com.tatry.yandextest.presentation.enum.CapabilitySupType
+import com.tatry.yandextest.presentation.enum.MethodsType
 import com.tatry.yandextest.presentation.enum.TypeAction
 import com.tatry.yandextest.presentation.enum.WidgetType
 import kotlinx.coroutines.Dispatchers
@@ -55,11 +56,11 @@ class UiSettingsFragment : Fragment() {
            when(isFormVisible) {
                true -> {
                    binding.containerCreateWidget.visibility = View.VISIBLE
-                   binding.createWidget.setText("Close")
+                   binding.createWidget.setText("Закрыть форму")
                }
                false -> {
                    binding.containerCreateWidget.visibility = View.GONE
-                   binding.createWidget.setText("Create widget")
+                   binding.createWidget.setText("Создать виджет")
                } else -> ""
            }
         }
@@ -90,17 +91,15 @@ class UiSettingsFragment : Fragment() {
                             selectSpinnerItemByText(spinnerWidgetType,
                                 foundItem?.widgetType
                             )
+                            btnCreateWidget.text = "Сохранить"
                         }
                     })
-
-                    Log.d("TAG", "widgetId: $widgetId")
                 }
             }
         )
         binding.rvWidgetList.adapter = rvAdapter
 
         viewModel.itemList.observe(viewLifecycleOwner, Observer { items ->
-            Log.d("TAG", "widgetList: $items")
             rvAdapter.submitList(items.toList())
         })
 
@@ -201,7 +200,8 @@ class UiSettingsFragment : Fragment() {
 
         binding.btnCreateWidget.setOnClickListener {
             val newElement = WidgetModel(
-                title = "title",
+                title = "TUYA",
+                methodsType = MethodsType.Yandex.toString(),
                 capabilityType = capabilityType,
                 capabilitySubType = capabilitySubType,
                 widgetType = widgetType,
@@ -211,11 +211,6 @@ class UiSettingsFragment : Fragment() {
                 height = binding.etWidgetHeight.text.toString().toInt()
             )
             viewModel.setElement(newElement)
-//            viewModel.addItem(newElement)
-
-
-
-
         }
     }
 
