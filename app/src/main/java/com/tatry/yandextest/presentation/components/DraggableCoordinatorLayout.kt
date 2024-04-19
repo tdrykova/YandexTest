@@ -30,13 +30,6 @@ class DraggableCoordinatorLayout @JvmOverloads constructor(context: Context?, at
         }
     }
 
-
-    fun getElements():MutableList<View> {
-        return draggableChildren
-    }
-
-
-
     fun removeDraggableChild(child: View) {
         require(child.parent === this)
         draggableChildren.remove(child)

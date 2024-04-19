@@ -24,7 +24,7 @@ import com.tatry.yandextest.presentation.YandexViewModel
 import com.tatry.yandextest.presentation.YandexViewModelFactory
 import com.tatry.yandextest.presentation.components.createCheckbox
 import com.tatry.yandextest.presentation.components.createColorPicker
-import com.tatry.yandextest.presentation.components.createSeekbar
+import com.tatry.yandextest.presentation.components.createSlider
 import com.tatry.yandextest.presentation.components.createSwitch
 import com.tatry.yandextest.presentation.enum.MethodsType
 import com.tatry.yandextest.presentation.enum.TypeAction
@@ -170,7 +170,7 @@ class UiFragment : Fragment() {
                                         }
                                     }
                                     WidgetType.SLIDER.toString() -> {
-                                        val slider = requireActivity().createSeekbar(
+                                        val slider = requireActivity().createSlider(
                                             container = binding.dragContainer,
                                             step = 10,
                                             valueFrom = 2700,
@@ -248,8 +248,12 @@ class UiFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             yandexViewModel.userInfo.collect {
                 it.deviceList.forEachIndexed { ind, dev ->
-                    if (ind == 1) devId = dev.id
-                    Log.d(YandexFragment.TAG, "dev: ${dev.externalId}")
+                    if (ind == 2) {
+                        devId = dev.id
+                        Log.d(YandexFragment.TAG, "devId: ${devId}")
+                    }
+
+                    Log.d(YandexFragment.TAG, "dev: ${dev.externalId} devId: ${dev.id}")
                 }
             }
         }

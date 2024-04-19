@@ -68,9 +68,6 @@ class UiSettingsFragment : Fragment() {
 
         val rvAdapter = WidgetListAdapter(
             object : WidgetActionListener {
-                override fun onChooseWidget(widget: WidgetModel) {
-//                    binding.tvWidgetId.text = widget.id.toString()
-                }
 
                 override fun getWidgetId(id: String) {
                     widgetId = id

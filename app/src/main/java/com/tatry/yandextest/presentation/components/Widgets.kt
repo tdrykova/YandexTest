@@ -12,13 +12,11 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
-import com.google.android.material.slider.RangeSlider
 import com.google.android.material.slider.Slider
 import com.tatry.yandextest.R
 
@@ -167,7 +165,7 @@ fun Context.createEditTextWithButton(
     return cardView
 }
 
-fun Context.createSeekbar(
+fun Context.createSlider(
     container: ViewGroup,
     valueFrom: Int,
     valueTo: Int,
