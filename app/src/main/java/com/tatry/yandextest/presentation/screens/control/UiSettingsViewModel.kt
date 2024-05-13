@@ -20,6 +20,9 @@ class UiSettingsViewModel : ViewModel() {
     private var _devName = MutableSharedFlow<String>()
     var devName = _devName.asSharedFlow()
 
+    private var _widgetId = MutableSharedFlow<String>()
+    var widgetId = _widgetId.asSharedFlow()
+
     private var _devCapabilityType = MutableSharedFlow<String>()
     var devCapabilityType = _devCapabilityType.asSharedFlow()
 
@@ -53,11 +56,24 @@ class UiSettingsViewModel : ViewModel() {
         mutableItemList.value = currentList
     }
 
+    fun removeItem(item: WidgetModel) {
+        val currentList = mutableItemList.value ?: mutableListOf()
+        currentList.remove(item)
+        mutableItemList.value = currentList
+    }
+
     fun setDevName(name: String) {
         viewModelScope.launch {
             _devName.emit(name)
         }
     }
+
+    fun getWidgetId(id: String) {
+        viewModelScope.launch {
+            _widgetId.emit(id)
+        }
+    }
+
 
     fun setDevCapabilityType(capabilityType: String) {
         viewModelScope.launch {

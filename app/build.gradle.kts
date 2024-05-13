@@ -4,7 +4,9 @@ plugins {
     id("org.jetbrains.kotlin.android")
 //    id("com.google.devtools.ksp")
 //    kotlin("multiplatform")
+//    id 'org.jetbrains.kotlin.plugin.serialization' version 'YOUR_KOTLIN_VERSION'
 
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 
@@ -48,6 +50,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+//        buildConfigField 'String', 'KEY', KEY
     }
 
     buildTypes {
@@ -73,6 +77,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -128,5 +133,12 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 
 
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+
+    // Snackbar
+    implementation("com.github.Musfick:Snackify:0.1.2")
+
+//    implementation("io.github.controlwear:virtualjoystick:1.10.1")
 
 }

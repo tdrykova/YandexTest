@@ -5,7 +5,8 @@ enum class TypeAction {
     COLOR_SETTING,
     MODE,
     RANGE,
-    TOGGLE
+    TOGGLE,
+    MOVE
 }
 
 enum class CapabilitySupType {
@@ -19,7 +20,8 @@ enum class WidgetType {
     EDIT_TEXT_VIEW,
     SLIDER,
     CHECK_BOX,
-    COLOR_PICKER
+    COLOR_PICKER,
+    JOYSTICK
 }
 
 enum class MethodsType {

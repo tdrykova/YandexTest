@@ -7,11 +7,14 @@ import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.tatry.yandextest.R
 import com.tatry.yandextest.databinding.WidgetItemBinding
 import com.tatry.yandextest.domain.model.widget.WidgetModel
 
 interface WidgetActionListener {
 
+
+    fun deleteWidgetById(id: String)
     fun getWidgetId(id: String)
 }
 
@@ -28,6 +31,7 @@ class WidgetListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WidgetListViewHolder {
         val binding = WidgetItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.root.setOnClickListener(this)
+        binding.btnDelete.setOnClickListener(this)
         return WidgetListViewHolder(binding)
     }
 
@@ -36,14 +40,20 @@ class WidgetListAdapter(
         holder.binding.tvWidgetType.text = widgetItem.widgetType
         holder.binding.tvWidgetId.text = widgetItem.id.toString()
         holder.itemView.tag = widgetItem
+        holder.binding.btnDelete.tag = widgetItem
         holder.itemView.setOnClickListener {
             val bundle = bundleOf("key" to widgetItem.id)
             actionListener.getWidgetId(widgetItem.id.toString())
         }
     }
 
-    override fun onClick(p0: View?) {
-
+    override fun onClick(v: View) {
+        val widget = v.tag as WidgetModel
+        when (v.id) {
+            R.id.btnDelete -> {
+                actionListener.deleteWidgetById(widget.id.toString())
+            }
+        }
     }
 }
 

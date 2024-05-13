@@ -24,12 +24,6 @@ class ControlFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-    }
-
     private fun initTabLayout(){
         val context = activity?.applicationContext
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText(R.string.ui_control))

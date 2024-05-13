@@ -1,3 +1,12 @@
+buildscript {
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-serialization:1.9.23")
+    }
+    repositories {
+        maven { url= uri("https://jitpack.io") }
+    }
+}
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id("com.android.application") version "8.2.2" apply false

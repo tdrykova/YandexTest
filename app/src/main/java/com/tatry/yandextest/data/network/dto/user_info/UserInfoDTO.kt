@@ -1,5 +1,6 @@
 package com.tatry.yandextest.data.network.dto.user_info
 
+import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import com.tatry.yandextest.data.network.dto.action.StateObjectDTO
 
@@ -19,6 +20,13 @@ data class UserInfoDTO(
     @SerializedName("households")
     val householdList: List<HouseholdDTO> = listOf()
 )
+
+
+fun UserInfoDTO.toJson(): String {
+    val gson = GsonBuilder()
+        .create()
+    return gson.toJson(this)
+}
 
 data class RoomDTO(
     @SerializedName("id")

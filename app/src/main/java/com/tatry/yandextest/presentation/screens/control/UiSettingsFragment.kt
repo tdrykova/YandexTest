@@ -68,6 +68,9 @@ class UiSettingsFragment : Fragment() {
 
         val rvAdapter = WidgetListAdapter(
             object : WidgetActionListener {
+                override fun deleteWidgetById(id: String) {
+                    viewModel.getWidgetId(id)
+                }
 
                 override fun getWidgetId(id: String) {
                     widgetId = id
@@ -198,7 +201,8 @@ class UiSettingsFragment : Fragment() {
         binding.btnCreateWidget.setOnClickListener {
             val newElement = WidgetModel(
                 title = "TUYA",
-                methodsType = MethodsType.Yandex.toString(),
+//                methodsType = MethodsType.Yandex.toString(),
+                methodsType = MethodsType.Arduino.toString(),
                 capabilityType = capabilityType,
                 capabilitySubType = capabilitySubType,
                 widgetType = widgetType,

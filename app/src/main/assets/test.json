@@ -1,0 +1,36 @@
+[
+  {
+    "questionSplit": {
+      "first": 1,
+      "operator": "+",
+      "second": 4,
+      "questionMarkValue": "4",
+      "answer": 5
+    },
+    "type": "easy",
+    "questionTxt": "1 + ? = 5",
+    "options": [
+      "-5",
+      "4",
+      "7",
+      "8"
+    ]
+  },
+  {
+    "questionSplit": {
+      "first": 9,
+      "operator": "/",
+      "second": 9,
+      "questionMarkValue": "/",
+      "answer": 1
+    },
+    "type": "easy",
+    "questionTxt": "9 ? 9 = 1",
+    "options": [
+      "-",
+      "+",
+      "/",
+      "*"
+    ]
+  }
+]

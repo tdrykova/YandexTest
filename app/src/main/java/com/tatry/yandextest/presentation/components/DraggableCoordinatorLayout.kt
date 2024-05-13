@@ -2,6 +2,7 @@ package com.tatry.yandextest.presentation.components
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -27,12 +28,28 @@ class DraggableCoordinatorLayout @JvmOverloads constructor(context: Context?, at
         require(child?.parent === this)
         if (child != null) {
             draggableChildren.add(child)
+
         }
     }
 
-    fun removeDraggableChild(child: View) {
-        require(child.parent === this)
-        draggableChildren.remove(child)
+    fun getChildrenList(): MutableList<View> {
+        return draggableChildren
+    }
+
+    fun removeDraggableChild(id: Int) {
+//        draggableChildren.forEach {
+//            if (it.id == id) {
+//                draggableChildren.remove(it)
+//            }
+//        }
+
+        val iterator = draggableChildren.iterator()
+        while (iterator.hasNext()) {
+            val child = iterator.next()
+            if (child.id == id) {
+                iterator.remove()
+            }
+        }
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {

@@ -2,6 +2,7 @@ package com.tatry.yandextest.presentation.components
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
@@ -14,6 +15,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
@@ -145,7 +147,6 @@ fun Context.createEditTextWithButton(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-//        hint = "Введите значение"
     }
 
     val button = Button(this).apply {
@@ -273,5 +274,51 @@ fun Context.createColorPicker(
     return cardView
 }
 
+@RequiresApi(Build.VERSION_CODES.M)
+fun Context.createJoystick(
+//    context: Context,
+    container: ViewGroup,
+    width: Int,
+    height: Int,
+    tvLabel: String,
+    onClick: (Float) -> Unit
+): View {
+    val cardView = createCardView(this)
+    cardView.id = View.generateViewId()
+    val linearLayout = createLinearLayout(this)
+    val textView = createTextView(this, tvLabel)
+
+    val joystick = JoystickView(this, null)
+    joystick.id = View.generateViewId()
+
+    joystick.setOnJoystickMoveListener(object: JoystickView.OnJoystickMoveListener {
+        override fun onValueChanged(xValue: Float, yValue: Float, angle: Float) {
+            onClick(angle)
+//            Log.d("Joystick", "xValue: $xValue, yValue: $yValue, angle: $angle")
+        }
+    })
+
+    val params = ViewGroup.LayoutParams(
+        dpToPx(this, width),
+        dpToPx(this, height)
+    )
+    joystick.layoutParams = params
+
+    val view = View(this)
+    val paramsView = ViewGroup.LayoutParams(
+        dpToPx(this, 20),
+        dpToPx(this, 20)
+    )
+    view.layoutParams = paramsView
+
+    linearLayout.addView(textView)
+    linearLayout.addView(view)
+    linearLayout.addView(joystick)
+    cardView.addView(linearLayout)
+
+    container.addView(cardView)
+
+    return cardView
+}
 
 
