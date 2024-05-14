@@ -171,7 +171,7 @@ fun Context.createSlider(
     valueFrom: Int,
     valueTo: Int,
     step: Int,
-    widthInDp: Int,
+    widthInDp: Int = 100,
     tvLabel: String,
     onClick: (Int) -> Unit
 ): View {
@@ -238,8 +238,8 @@ fun Context.createCheckbox(
 
 fun Context.createColorPicker(
     container: ViewGroup,
-    width: Int,
-    height: Int,
+    width: Int = 100,
+    height: Int = 100,
     tvLabel: String,
 ): View {
     val cardView = createCardView(this)
@@ -276,10 +276,9 @@ fun Context.createColorPicker(
 
 @RequiresApi(Build.VERSION_CODES.M)
 fun Context.createJoystick(
-//    context: Context,
     container: ViewGroup,
-    width: Int,
-    height: Int,
+//    width: Int,
+//    height: Int,
     tvLabel: String,
     onClick: (Float) -> Unit
 ): View {
@@ -298,11 +297,11 @@ fun Context.createJoystick(
         }
     })
 
-    val params = ViewGroup.LayoutParams(
-        dpToPx(this, width),
-        dpToPx(this, height)
-    )
-    joystick.layoutParams = params
+//    val params = ViewGroup.LayoutParams(
+//        dpToPx(this, width),
+//        dpToPx(this, height)
+//    )
+//    joystick.layoutParams = params
 
     val view = View(this)
     val paramsView = ViewGroup.LayoutParams(

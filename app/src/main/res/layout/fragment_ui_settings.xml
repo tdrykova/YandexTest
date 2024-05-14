@@ -6,63 +6,76 @@
     android:layout_height="match_parent"
     tools:context=".presentation.screens.control.UiSettingsFragment">
 
-    <LinearLayout
-        android:id="@+id/containerBtnCreate"
+    <TextView
+        android:id="@+id/tvCreateWidget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-<!--        <TextView-->
-<!--            android:text="device"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"/>-->
-        <Button
-            android:id="@+id/createWidget"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Создать виджет" />
-    </LinearLayout>
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="45dp"
+        android:text="Создайте элементы управления"
 
-    <ScrollView
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/containerBtnCreate"
-        app:layout_constraintBottom_toTopOf="@+id/rvWidgetList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/containerCreateWidget"
+        >
+
+    </TextView>
+
         <LinearLayout
             android:id="@+id/containerCreateWidget"
             android:layout_width="match_parent"
-            android:padding="35dp"
-            android:visibility="gone"
-            android:layout_height="400dp"
-            android:orientation="vertical">
+            android:layout_height="350dp"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCreateWidget"
+            app:layout_constraintBottom_toTopOf="@+id/tvCreatedElements">
 
             <LinearLayout
                 android:id="@+id/containerWidgetId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Id:"
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvWidgetId"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/containerMethodType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp" />
+                    android:layout_gravity="center"
+                    android:text="Тип устройства:"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spinnerMethodType"
+                    android:layout_width="180dp"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -70,24 +83,21 @@
                 android:id="@+id/containerCapabilityType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Тип действия:"
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spinnerCapabilityType"
-                    android:layout_width="180dp"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp" />
+                    android:layout_width="210dp"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -95,24 +105,21 @@
                 android:id="@+id/containerCapabilitySubType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Подтип действия:"
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spinnerCapabilitySubType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -120,128 +127,125 @@
                 android:id="@+id/containerWidgetType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Тип виджета:"
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spinnerWidgetType"
-                    android:layout_width="180dp"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp" />
+                    android:layout_width="210dp"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
-            <LinearLayout
+            <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/containerWidgetPosition"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_marginHorizontal="10dp"
+                app:alignItems="center"
+                app:justifyContent="space_between"
+                android:orientation="horizontal">
 
-                <TextView
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="X:"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:layout_marginEnd="5dp"
+                    android:hint="X:">
 
-                <EditText
-                    android:id="@+id/etPosX"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:editable="false" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPosX"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:background="@color/white"
+                        android:singleLine="true" />
 
-                <!--            <com.google.android.material.textfield.TextInputLayout-->
-                <!--                android:id="@+id/containerWidgetPosition"-->
-                <!--                android:layout_width="40dp"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:hint="X"-->
-                <!--                app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                app:layout_constraintStart_toStartOf="parent"-->
-                <!--                app:layout_constraintTop_toTopOf="parent">-->
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <!--                &lt;!&ndash;this is the actual edit text which takes the input&ndash;&gt;-->
-                <!--                <com.google.android.material.textfield.TextInputEditText-->
-                <!--                    android:id="@+id/etPosX"-->
-                <!--                    android:layout_width="40dp"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    />-->
-
-                <!--            </com.google.android.material.textfield.TextInputLayout>-->
-
-                <TextView
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Y:"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:layout_marginEnd="5dp"
+                    android:hint="Y:">
 
-                <EditText
-                    android:id="@+id/etPosY"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:editable="false" />
-                <TextView
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPosY"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:background="@color/white"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="W:"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:layout_marginEnd="5dp"
+                    android:hint="W:">
 
-                <EditText
-                    android:id="@+id/etWidgetWidth"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etWidgetWidth"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:background="@color/white"
+                        android:singleLine="true" />
 
-                <TextView
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="H:"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:hint="H:">
 
-                <EditText
-                    android:id="@+id/etWidgetHeight"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etWidgetHeight"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:background="@color/white"
+                        android:singleLine="true" />
 
-            </LinearLayout>
-
+                </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.flexbox.FlexboxLayout>
             <LinearLayout
                 android:id="@+id/containerWidgetHW"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_gravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:gravity="end">
                 <Button
+                    android:layout_marginTop="4dp"
                     android:id="@+id/btnCreateWidget"
+                    android:layout_marginEnd="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Добавить" />
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
 
+    <TextView
+        android:id="@+id/tvCreatedElements"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="Элементы управления"
+        app:layout_constraintTop_toBottomOf="@+id/containerCreateWidget"
+        app:layout_constraintBottom_toTopOf="@+id/rvWidgetList"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </TextView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvWidgetList"
@@ -252,30 +256,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/widget_item"
-        app:layout_constraintTop_toBottomOf="@+id/containerCreateWidget"/>
-<!--    </ScrollView>-->
-
-
-    <!--    <LinearLayout-->
-    <!--        android:id="@+id/linearLayout"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_marginStart="16dp"-->
-    <!--        android:layout_marginTop="16dp"-->
-    <!--        android:layout_marginEnd="16dp"-->
-    <!--        android:orientation="vertical"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/containerCreateWidget">-->
-
-    <!--        <androidx.recyclerview.widget.RecyclerView-->
-    <!--            android:id="@+id/rcWidgetList"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            tools:itemCount="20"-->
-    <!--            tools:listitem="@layout/item_widget_card_list" />-->
-
-    <!--    </LinearLayout>-->
+        app:layout_constraintTop_toBottomOf="@+id/tvCreatedElements"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

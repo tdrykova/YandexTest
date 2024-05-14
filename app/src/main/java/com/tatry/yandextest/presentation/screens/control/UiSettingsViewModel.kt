@@ -1,5 +1,7 @@
 package com.tatry.yandextest.presentation.screens.control
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -59,6 +61,13 @@ class UiSettingsViewModel : ViewModel() {
     fun removeItem(item: WidgetModel) {
         val currentList = mutableItemList.value ?: mutableListOf()
         currentList.remove(item)
+        mutableItemList.value = currentList
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun removeItemById(id: Int) {
+        val currentList = mutableItemList.value ?: mutableListOf()
+        currentList.removeIf { it.id == id }
         mutableItemList.value = currentList
     }
 

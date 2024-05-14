@@ -1,5 +1,6 @@
 package com.tatry.yandextest.presentation.screens.control
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -31,6 +33,7 @@ class UiSettingsFragment : Fragment() {
     private val viewModel: UiSettingsViewModel by activityViewModels()
 
     private var devName = ""
+    private var deviceMethodType = ""
     private var capabilityType = ""
     private var capabilitySubType = ""
     private var widgetType = ""
@@ -50,26 +53,12 @@ class UiSettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val args = arguments?.getStringArrayList("key")
 
-        binding.createWidget.setOnClickListener {
-            isFormVisible = !isFormVisible
-            binding.containerWidgetId.visibility = View.GONE
-           when(isFormVisible) {
-               true -> {
-                   binding.containerCreateWidget.visibility = View.VISIBLE
-                   binding.createWidget.setText("Закрыть форму")
-               }
-               false -> {
-                   binding.containerCreateWidget.visibility = View.GONE
-                   binding.createWidget.setText("Создать виджет")
-               } else -> ""
-           }
-        }
-
-
         val rvAdapter = WidgetListAdapter(
             object : WidgetActionListener {
+                @RequiresApi(Build.VERSION_CODES.N)
                 override fun deleteWidgetById(id: String) {
                     viewModel.getWidgetId(id)
+                    viewModel.removeItemById(id.toInt())
                 }
 
                 override fun getWidgetId(id: String) {
@@ -82,6 +71,9 @@ class UiSettingsFragment : Fragment() {
                         val foundItem = items.find { it.id.toString() == id }
                         with(binding) {
                             tvWidgetId.text = foundItem?.id.toString()
+                            selectSpinnerItemByText(spinnerMethodType,
+                                foundItem?.methodsType
+                            )
                             selectSpinnerItemByText(spinnerCapabilityType,
                                 foundItem?.capabilityType
                             )
@@ -102,6 +94,31 @@ class UiSettingsFragment : Fragment() {
         viewModel.itemList.observe(viewLifecycleOwner, Observer { items ->
             rvAdapter.submitList(items.toList())
         })
+
+        val deviceType = ArrayList<String>()
+        MethodsType.values().forEach { deviceType.add(it.toString()) }
+        val adapterDeviceType =
+            ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_list_item_1,
+                deviceType
+            )
+        adapterDeviceType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        binding.spinnerMethodType.adapter = adapterDeviceType
+        binding.spinnerMethodType.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    deviceMethodType = parent.getItemAtPosition(position).toString()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {}
+            }
 
         val deviceCapabilityType = ArrayList<String>()
         TypeAction.values().forEach { deviceCapabilityType.add(it.toString()) }
@@ -195,21 +212,20 @@ class UiSettingsFragment : Fragment() {
             }
         }
 
-        binding.etWidgetHeight.setText("10")
-        binding.etWidgetWidth.setText("10")
+        binding.etWidgetHeight.setText("100")
+        binding.etWidgetWidth.setText("100")
 
         binding.btnCreateWidget.setOnClickListener {
             val newElement = WidgetModel(
                 title = "TUYA",
-//                methodsType = MethodsType.Yandex.toString(),
-                methodsType = MethodsType.Arduino.toString(),
+                methodsType = deviceMethodType,
                 capabilityType = capabilityType,
                 capabilitySubType = capabilitySubType,
                 widgetType = widgetType,
                 posX = binding.etPosX.text.toString().toInt(),
                 posY = binding.etPosY.text.toString().toInt(),
-                width = binding.etWidgetWidth.text.toString().toInt(),
-                height = binding.etWidgetHeight.text.toString().toInt()
+//                width = binding.etWidgetWidth.text.toString().toInt(),
+//                height = binding.etWidgetHeight.text.toString().toInt()
             )
             viewModel.setElement(newElement)
         }

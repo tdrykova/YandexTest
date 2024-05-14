@@ -9,7 +9,7 @@ data class WidgetModel(
     val widgetType: String,
     val posX: Int,
     val posY: Int,
-    val width: Int,
-    val height: Int,
+//    val width: Int,
+//    val height: Int,
 )
 

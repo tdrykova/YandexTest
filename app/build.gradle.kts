@@ -139,6 +139,7 @@ dependencies {
     // Snackbar
     implementation("com.github.Musfick:Snackify:0.1.2")
 
-//    implementation("io.github.controlwear:virtualjoystick:1.10.1")
+    //Flex
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 
 }

@@ -222,8 +222,8 @@ class UiFragment : Fragment() {
                                     WidgetType.JOYSTICK.toString() -> {
                                         val joystick = requireActivity().createJoystick(
 //                                            context = requireContext(),
-                                            height = 100,
-                                            width = 100,
+//                                            height = 100,
+//                                            width = 100,
                                             container = binding.dragContainer,
                                             tvLabel = "Joystick"
                                         ) { moveJoystick(it) }
@@ -251,8 +251,8 @@ class UiFragment : Fragment() {
                                     WidgetType.COLOR_PICKER.toString() -> {
                                         val picker = requireActivity().createColorPicker(
                                             container = binding.dragContainer,
-                                            width = el.width,
-                                            height = el.height,
+//                                            width = el.width,
+//                                            height = el.height,
                                             tvLabel = TypeAction.COLOR_SETTING.toString()
                                         )
                                         el.id = picker.id

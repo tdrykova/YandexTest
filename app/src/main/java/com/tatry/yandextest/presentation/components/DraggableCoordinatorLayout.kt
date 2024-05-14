@@ -37,12 +37,6 @@ class DraggableCoordinatorLayout @JvmOverloads constructor(context: Context?, at
     }
 
     fun removeDraggableChild(id: Int) {
-//        draggableChildren.forEach {
-//            if (it.id == id) {
-//                draggableChildren.remove(it)
-//            }
-//        }
-
         val iterator = draggableChildren.iterator()
         while (iterator.hasNext()) {
             val child = iterator.next()
