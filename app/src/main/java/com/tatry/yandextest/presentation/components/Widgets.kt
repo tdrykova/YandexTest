@@ -112,7 +112,6 @@ fun Context.createSwitch(
     val textView = createTextView(this, tvLabel)
 
     val switch = SwitchCompat(this)
-    Log.d("TAG", "switch id: ${switch.id}")
     switch.setOnCheckedChangeListener { buttonView, isChecked ->
         onClick(isChecked)
     }

@@ -142,4 +142,8 @@ dependencies {
     //Flex
     implementation("com.google.android.flexbox:flexbox:3.0.0")
 
+    // Dagger
+    implementation("com.google.dagger:dagger:2.51.1")
+    kapt("com.google.dagger:dagger-compiler:2.51.1")
+
 }

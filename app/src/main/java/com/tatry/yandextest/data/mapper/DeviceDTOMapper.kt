@@ -28,8 +28,9 @@ import com.tatry.yandextest.domain.model.devices.user_info.HouseholdModel
 import com.tatry.yandextest.domain.model.devices.user_info.RoomModel
 import com.tatry.yandextest.domain.model.devices.user_info.ScenarioModel
 import com.tatry.yandextest.domain.model.devices.user_info.UserInfoModel
+import javax.inject.Inject
 
-class DeviceDTOMapper {
+class DeviceDTOMapper @Inject constructor() {
 
     // DeviceActionDTOToDeviceActionModel
 

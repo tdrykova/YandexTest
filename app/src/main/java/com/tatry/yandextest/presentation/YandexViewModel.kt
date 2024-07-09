@@ -30,30 +30,12 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "MainFragment555"
 
-class YandexViewModelFactory : ViewModelProvider.Factory {
+class YandexViewModelFactory(
+    private val yandexViewModel: YandexViewModel
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(YandexViewModel::class.java)) {
-            val repo = YandexRepositoryImpl(App.INSTANCE)
-            val useCase1 = UploadUserInfoUseCase(repo)
-            val useCase4 = CashDeviceListUseCase(repo)
-            val useCase5 = GetDeviceListUseCase(repo)
-            val createDeviceCapabilityList = CreateDeviceCapabilityListUseCase(repo)
-            val useCase2 = UploadDeviceStateUseCase(repo)
-            val useCase3 = PostDevicesActionsUseCase(repo)
-            val useCase7 = InsertDeviceWithCapabilityListUseCase(repo)
-            val getAllDeviceList = GetAllDeviceListUseCase(repo)
-
-            return YandexViewModel(
-                useCase1,
-                useCase4,
-                createDeviceCapabilityList,
-                useCase5,
-                useCase2,
-                useCase3,
-                useCase7,
-                getAllDeviceList
-
-            ) as T
+            return yandexViewModel as T
         }
         throw RuntimeException("Unknown class name")
     }
@@ -122,7 +104,7 @@ class YandexViewModel(
         viewModelScope.launch {
             _devState.value = uploadDeviceStateUseCase.getDeviceStateUseCase(token, devId)
             Log.d(
-                YandexFragment.TAG, " getDeviceState ${_devState.value.toString()}"
+                "TAG", " getDeviceState ${_devState.value}"
             )
         }
     }

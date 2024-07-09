@@ -39,7 +39,6 @@ class SecurityManger(private val context: Context) {
     }
 
     fun encryptFile(fileName: String, encryptFileName:String){
-//        val readFileToString = context.loadFromAsset(fileName)
         val readFileToString = File(fileName).readText()
 
         val encryptFile = File(context.filesDir,encryptFileName)

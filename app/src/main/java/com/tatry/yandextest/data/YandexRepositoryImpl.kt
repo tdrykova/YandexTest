@@ -1,7 +1,6 @@
 package com.tatry.yandextest.data
 
-import android.app.Application
-import com.tatry.yandextest.data.local.database.AppDatabase
+import com.tatry.yandextest.data.local.dao.DeviceDao
 import com.tatry.yandextest.data.local.entity.device.DeviceRelations
 import com.tatry.yandextest.data.mapper.DeviceEntityMapper
 import com.tatry.yandextest.data.mapper.DeviceDTOMapper
@@ -16,13 +15,13 @@ import com.tatry.yandextest.domain.model.devices.user_info.UserInfoModel
 import com.tatry.yandextest.domain.model.local.CreateDeviceCapabilityModel
 import com.tatry.yandextest.domain.model.user.UserModel
 import com.tatry.yandextest.domain.repository.YandexRepository
+import javax.inject.Inject
 
-class YandexRepositoryImpl(
-    application: Application
+class YandexRepositoryImpl @Inject constructor(
+    private val deviceDtoMapper: DeviceDTOMapper,
+    private val deviceEntityMapper: DeviceEntityMapper,
+    private val deviceDao: DeviceDao
 ): YandexRepository {
-    private val deviceDtoMapper = DeviceDTOMapper()
-    private val deviceEntityMapper = DeviceEntityMapper()
-    private val deviceDao = AppDatabase.getInstance(application).deviceDao()
 
     // Network
     override suspend fun getUserInfoFromNetwork(token: String): UserInfoModel {

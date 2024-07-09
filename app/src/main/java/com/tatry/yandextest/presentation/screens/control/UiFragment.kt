@@ -31,22 +31,18 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.musfickjamil.snackify.Snackify
+import com.tatry.yandextest.App
 import com.tatry.yandextest.BuildConfig
-import com.tatry.yandextest.data.cipher.AESEncyption
 import com.tatry.yandextest.data.cipher.CryptoManager
 import com.tatry.yandextest.data.cipher.SecurityManger
 import com.tatry.yandextest.data.cipher.UserSettingsSerializer
-import com.tatry.yandextest.data.network.dto.user_info.UserInfoDTO
 import com.tatry.yandextest.databinding.FragmentUiBinding
 import com.tatry.yandextest.domain.model.devices.action.ActionObjectModel
 import com.tatry.yandextest.domain.model.devices.action.DeviceActionModel
 import com.tatry.yandextest.domain.model.devices.action.DeviceActionsRequestModel
 import com.tatry.yandextest.domain.model.devices.action.StateObjectModel
 import com.tatry.yandextest.presentation.BaseActivity
-import com.tatry.yandextest.presentation.YandexFragment
 import com.tatry.yandextest.presentation.YandexViewModel
-import com.tatry.yandextest.presentation.YandexViewModelFactory
-import com.tatry.yandextest.presentation.components.JoystickView
 import com.tatry.yandextest.presentation.components.createCheckbox
 import com.tatry.yandextest.presentation.components.createColorPicker
 import com.tatry.yandextest.presentation.components.createJoystick
@@ -71,22 +67,16 @@ class UiFragment : Fragment() {
     private var blue = 0xff
     private var brightness = 255
 
-    private val token = "Bearer y0_AgAEA7qkJBRwAAtNHQAAAAD7NOpOAABZXzInfHtFAoIVc4SUjPlw0bda8g"
+    private val token =
+        "Bearer y0_AgAEA7qkJBRwAAtNHQAAAAD7NOpOAABZXzInfHtFAoIVc4SUjPlw0bda8g"
     private lateinit var devId: String
     private val yandexViewModel: YandexViewModel by viewModels {
-        YandexViewModelFactory()
+        App.INSTANCE.applicationComponent.yandexViewModelFactory()
     }
 
-
     private lateinit var file: File
-
-    private val MAX_LOG_LINES = 10
     private var actionsCounter = 0
-
-    val widgetList: MutableList<View> = ArrayList()
-
     private lateinit var inputStream: InputStream
-
 
     private val viewModel: UiSettingsViewModel by activityViewModels()
     override fun onCreateView(
@@ -98,25 +88,16 @@ class UiFragment : Fragment() {
         return binding.root
     }
 
-
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         checkPermission()
         requestPermission()
 
-        val dataStore = dataStore(
-            fileName = "user-settings.json",
-            serializer = UserSettingsSerializer(CryptoManager())
-        )
-
-
         binding.dragContainer.setupWithViewModel(viewModel)
-
         binding.btnPickFile.setOnClickListener { showFileChooser() }
 
         val securityManger = SecurityManger(requireContext())
-
         binding.btnEncrypt.setOnClickListener {
 //            securityManger.encryptFile(
 ////                "${Environment.getExternalStorageDirectory()}/${file.absolutePath}",
@@ -139,7 +120,6 @@ class UiFragment : Fragment() {
             )
 
             sendJson()
-//            passDataToTelegram("org.telegram.messenger.web")
             Log.d("decryptionFileToString", decryptionFileToString)
 
             // AESEncyption
@@ -147,28 +127,8 @@ class UiFragment : Fragment() {
 //            Log.d(TAG, "encrypt: ${securityManger.decrypt("xiiXWXWtNW3F2iO4JMVWCg==")}")
         }
 
-//        binding.joystickView.setOnJoystickMoveListener(object :
-//            JoystickView.OnJoystickMoveListener {
-//            override fun onValueChanged(xValue: Float, yValue: Float, angle: Float) {
-//                Log.d("TAG", "joystick: $angle")
-//            }
-//        })
-
         getUserDevice()
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.widgetId.collect { widgetId ->
-
-                val viewToRemove = binding.dragContainer.findViewById<View>(widgetId.toInt())
-                binding.dragContainer.removeDraggableChild(widgetId.toInt())
-                if (viewToRemove != null) {
-                    binding.dragContainer.removeView(viewToRemove)
-                }
-                binding.dragContainer.invalidate() // перерисовка dragContainer
-                binding.dragContainer.requestLayout() // применение новых изменений
-                Log.d("TAG", "addDraggableChild: ${widgetId}")
-            }
-        }
+        getWidgetId()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.element.collect { el ->
@@ -221,9 +181,6 @@ class UiFragment : Fragment() {
                                 when (el.widgetType) {
                                     WidgetType.JOYSTICK.toString() -> {
                                         val joystick = requireActivity().createJoystick(
-//                                            context = requireContext(),
-//                                            height = 100,
-//                                            width = 100,
                                             container = binding.dragContainer,
                                             tvLabel = "Joystick"
                                         ) { moveJoystick(it) }
@@ -251,8 +208,6 @@ class UiFragment : Fragment() {
                                     WidgetType.COLOR_PICKER.toString() -> {
                                         val picker = requireActivity().createColorPicker(
                                             container = binding.dragContainer,
-//                                            width = el.width,
-//                                            height = el.height,
                                             tvLabel = TypeAction.COLOR_SETTING.toString()
                                         )
                                         el.id = picker.id
@@ -281,10 +236,6 @@ class UiFragment : Fragment() {
                                                 val currentRed = red * brightness / 255
                                                 val currentGreen = green * brightness / 255
                                                 val currentBlue = blue * brightness / 255
-//                                                val currentColor =
-//                                                    (currentGreen shl 16) + (currentRed shl 8) + currentBlue
-//                                                val hex = "#%06X".format(currentColor)
-
                                                 val hsv = FloatArray(3)
                                                 val currentColor = Color.rgb(
                                                     currentRed,
@@ -292,13 +243,6 @@ class UiFragment : Fragment() {
                                                     currentBlue
                                                 );
                                                 Color.colorToHSV(currentColor, hsv)
-//                                                binding.dragContainer.setBackgroundColor(
-//                                                    Color.rgb(
-//                                                        currentRed,
-//                                                        currentGreen,
-//                                                        currentBlue,
-//                                                    )
-//                                                )
                                                 setColorHsv(
                                                     h = hsv[0].toInt(),
                                                     s = hsv[1].toInt(),
@@ -364,12 +308,26 @@ class UiFragment : Fragment() {
 //
 //                }
 
-
         binding.mode.setOnCheckedChangeListener { buttonView, isChecked ->
             binding.dragContainer.enableDrag(isChecked)
+        }di
+
+    }
+
+    private fun getWidgetId() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.widgetId.collect { widgetId ->
+
+                val viewToRemove = binding.dragContainer.findViewById<View>(widgetId.toInt())
+                binding.dragContainer.removeDraggableChild(widgetId.toInt())
+                if (viewToRemove != null) {
+                    binding.dragContainer.removeView(viewToRemove)
+                }
+                binding.dragContainer.invalidate() // перерисовка dragContainer
+                binding.dragContainer.requestLayout() // применение новых изменений
+                Log.d("TAG", "addDraggableChild: ${widgetId}")
+            }
         }
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -579,10 +537,10 @@ class UiFragment : Fragment() {
                 it.deviceList.forEachIndexed { ind, dev ->
                     if (ind == 2) {
                         devId = dev.id
-                        Log.d(YandexFragment.TAG, "devId: ${devId}")
+                        Log.d("TAG", "devId: ${devId}")
                     }
 
-                    Log.d(YandexFragment.TAG, "dev: ${dev.externalId} devId: ${dev.id}")
+                    Log.d("TAG", "dev: ${dev.externalId} devId: ${dev.id}")
                 }
             }
         }
@@ -612,6 +570,7 @@ class UiFragment : Fragment() {
                 it.devices.forEach { device ->
                     if (device.id == devId && fl == 0) {
                         appendLogMessage(device.toString())
+                        Log.d(TAG, "setTemperatureLight: ${device.toString()}")
                         fl += 1
                     }
                 }
@@ -644,10 +603,11 @@ class UiFragment : Fragment() {
                 )
 
             ) else return@launch
-            yandexViewModel.devAction.collectLatest {
+            yandexViewModel.devAction.collect {
                 it.devices.forEach { device ->
                     if (device.id == devId && fl == 0) {
                         appendLogMessage(device.toString())
+                        Log.d(TAG, "setTemperatureLight: ${device.toString()}")
                         fl += 1
                     }
                 }
@@ -682,6 +642,7 @@ class UiFragment : Fragment() {
                 it.devices.forEach { device ->
                     if (device.id == devId && fl == 0) {
                         appendLogMessage(device.toString())
+                        Log.d(TAG, "setTemperatureLight: ${device.toString()}")
                         fl += 1
                     }
                 }

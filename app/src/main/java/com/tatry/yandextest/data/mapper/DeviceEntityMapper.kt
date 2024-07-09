@@ -3,8 +3,9 @@ package com.tatry.yandextest.data.mapper
 import com.tatry.yandextest.data.local.entity.device.DeviceCapabilityEntity
 import com.tatry.yandextest.domain.model.devices.user_info.DeviceCapabilityModel
 import com.tatry.yandextest.domain.model.local.CreateDeviceCapabilityModel
+import javax.inject.Inject
 
-class DeviceEntityMapper {
+class DeviceEntityMapper @Inject constructor() {
     fun mapDeviceCapabilityEntityToCreateDeviceCapabilityModel(
         deviceCapabilityEntity: DeviceCapabilityEntity
     ): CreateDeviceCapabilityModel {
