@@ -310,7 +310,7 @@ class UiFragment : Fragment() {
 
         binding.mode.setOnCheckedChangeListener { buttonView, isChecked ->
             binding.dragContainer.enableDrag(isChecked)
-        }di
+        }
 
     }
 
